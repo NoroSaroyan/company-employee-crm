@@ -22,7 +22,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     private Collection<Role> roles;
 
     public void setEmail(String email) {

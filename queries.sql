@@ -1,22 +1,22 @@
 CREATE TABLE companies
 (
-    id      LONG NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id      BIGINT NOT NULL  PRIMARY KEY,
     name    TEXT NOT NULL UNIQUE,
     email   TEXT UNIQUE,
-    website TEXT,
+    website TEXT
 );
 CREATE TABLE employees
 (
-    id           LONG NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    companyId    LONG REFERENCES companies (id),
+    id           BIGINT NOT NULL  PRIMARY KEY,
+    companyId    BIGINT REFERENCES companies (id),
     name         TEXT NOT NULL,
     surname      TEXT NOT NULL,
     phone_number TEXT UNIQUE,
-    email        TEXT UNIQUE,
+    email        TEXT UNIQUE
 );
 create table users
 (
-    id       LONG NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id       BIGINT NOT NULL PRIMARY KEY,
     email    TEXT NOT NULL,
     password TEXT NOT NULL
 );
@@ -26,9 +26,12 @@ CREATE TABLE roles
     name TEXT UNIQUE NOT NULL PRIMARY KEY
 );
 
-CREATE TABLE users_roles_relations
+SELECT * FROM users_roles;
+
+
+CREATE TABLE users_roles
 (
-    userId   LONG REFERENCES users (id),
+    userId   BIGINT REFERENCES users (id),
     roleName TEXT REFERENCES roles (name),
     CONSTRAINT userId_roleName PRIMARY KEY (userId, roleName)
 );

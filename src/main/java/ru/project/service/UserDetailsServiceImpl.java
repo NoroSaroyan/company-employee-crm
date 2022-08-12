@@ -1,5 +1,6 @@
 package ru.project.service;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("BEFORE mayBeUSER ___________________");
         Optional<User> mayBeUser = userRepository.findByEmail(email);
+        System.out.println("AFTER  mayBeUSER ___________________");
+
         if (mayBeUser.isEmpty()) {
             throw new UsernameNotFoundException(email);
         }

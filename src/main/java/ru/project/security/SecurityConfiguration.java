@@ -5,41 +5,34 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
-
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests((auth) -> auth
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic(withDefaults());
-//        return http.build();
-//    }
-
-    @Override
+public class SecurityConfiguration{
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/css/**", "/js/**");
     }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http .csrf().disable()
-                .authorizeRequests().antMatchers("/","/public").permitAll()
-                .antMatchers("/authenticated", "/admin", "/companies/{companyId}/delete","/companies/{companyId}/add",
-                        "/companies/{companyId}/edit",
-                        "/companies/{companyId}/employees/employeeId/delete","/companies/{companyId}/employees/employeeId/edit",
-                        "employees/employee/add").authenticated().and()
+
+//        "/companies/{companyId}/delete", "/companies/{companyId}/add",
+//                        "/companies/{companyId}/edit",
+//                        "/companies/{companyId}/employees/employeeId/delete", "/companies/{companyId}/employees/employeeId/edit",
+//                        "employees/employee/add"
+
+        http.csrf().disable()
+                .authorizeRequests().antMatchers("/", "/home", "/index").permitAll()
+                .antMatchers("/admin").authenticated()
+                .and()
                 .formLogin()
-                .loginPage("/authorise").usernameParameter("login").passwordParameter("entry")
+                .loginPage("/login.html").loginProcessingUrl("/login")
+                .defaultSuccessUrl("/home", true)
+                .failureUrl("/login")
+                .usernameParameter("login").passwordParameter("entry")
                 .permitAll()
                 .and()
                 .logout()
@@ -48,6 +41,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .invalidateHttpSession(true)
                 .deleteCookies()
                 .permitAll();
-
     }
 }
+
