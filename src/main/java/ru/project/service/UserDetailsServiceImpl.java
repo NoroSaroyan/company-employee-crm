@@ -5,9 +5,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.project.entity.User;
 import ru.project.repository.UserRepository;
+import ru.project.security.Encoder;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,10 +18,10 @@ import java.util.stream.Collectors;
 @Service("UserDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository){
+    private final PasswordEncoder passwordEncoder;
+    public UserDetailsServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -28,13 +31,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (mayBeUser.isEmpty()) {
             throw new UsernameNotFoundException(email);
         }
+        System.out.println("_________________________");
         User user = mayBeUser.get();
+        System.out.println("USER ID:" + user.getId());
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
-                .password(user.getPassword())
+                .password(passwordEncoder.encode(user.getPassword()))
                 .authorities(user.getAuthorities().stream()
                         .map(authority -> new SimpleGrantedAuthority("ROLE_" + authority.getName().toUpperCase())).collect(Collectors.toList()))
-                .build();    }
+                .build();
+    }
 
     public boolean checkByEmail(String email) {
         return userRepository.findByEmail(email).isPresent();
