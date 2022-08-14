@@ -18,10 +18,8 @@ import java.util.stream.Collectors;
 @Service("UserDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    public UserDetailsServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,12 +29,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (mayBeUser.isEmpty()) {
             throw new UsernameNotFoundException(email);
         }
-        System.out.println("_________________________");
+
         User user = mayBeUser.get();
-        System.out.println("USER ID:" + user.getId());
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
-                .password(passwordEncoder.encode(user.getPassword()))
+                .password(user.getPassword())
                 .authorities(user.getAuthorities().stream()
                         .map(authority -> new SimpleGrantedAuthority("ROLE_" + authority.getName().toUpperCase())).collect(Collectors.toList()))
                 .build();
