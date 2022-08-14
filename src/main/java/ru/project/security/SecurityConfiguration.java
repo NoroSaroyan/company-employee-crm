@@ -5,25 +5,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration{
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/css/**", "/js/**");
     }
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-//        "/companies/{companyId}/delete", "/companies/{companyId}/add",
-//                        "/companies/{companyId}/edit",
-//                        "/companies/{companyId}/employees/employeeId/delete", "/companies/{companyId}/employees/employeeId/edit",
-//                        "employees/employee/add"
-
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/", "/home", "/index").permitAll()
                 .antMatchers("/admin").authenticated()
@@ -42,5 +36,10 @@ public class SecurityConfiguration{
                 .deleteCookies()
                 .permitAll();
     }
+
+//    @Bean
+//    protected BCryptPasswordEncoder encoder(BCryptPasswordEncoder encoder){
+//        return encoder;
+//    }
 }
 

@@ -1,47 +1,53 @@
 CREATE TABLE companies
 (
-    id      BIGINT NOT NULL  PRIMARY KEY,
-    name    TEXT NOT NULL UNIQUE,
+    id      BIGINT NOT NULL PRIMARY KEY,
+    name    TEXT   NOT NULL UNIQUE,
     email   TEXT UNIQUE,
     website TEXT
 );
 CREATE TABLE employees
 (
-    id           BIGINT NOT NULL  PRIMARY KEY,
+    id           BIGINT NOT NULL PRIMARY KEY,
     companyId    BIGINT REFERENCES companies (id),
-    name         TEXT NOT NULL,
-    surname      TEXT NOT NULL,
+    name         TEXT   NOT NULL,
+    surname      TEXT   NOT NULL,
     phone_number TEXT UNIQUE,
     email        TEXT UNIQUE
 );
 create table users
 (
     id       BIGINT NOT NULL PRIMARY KEY,
-    email    TEXT NOT NULL,
-    password TEXT NOT NULL
+    email    TEXT   NOT NULL,
+    password TEXT   NOT NULL
 );
 
-CREATE TABLE roles
+CREATE TABLE authorities
 (
-    name TEXT UNIQUE NOT NULL PRIMARY KEY
+    id   BIGINT UNIQUE PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL
 );
 
-SELECT * FROM users_roles;
-
-
-CREATE TABLE users_roles
+CREATE TABLE users_authorities
 (
-    userId   BIGINT REFERENCES users (id),
-    roleName TEXT REFERENCES roles (name),
-    CONSTRAINT userId_roleName PRIMARY KEY (userId, roleName)
+    user_id BIGINT,
+    authority_id BIGINT,
+    CONSTRAINT userId_roleName PRIMARY KEY (user_id, authority_id),
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (authority_id) REFERENCES authorities (id)
 );
 
-INSERT INTO roles
-VALUES('ADMIN');
+INSERT INTO users(id, email, password)
+values ('1122', 'email', 'password');
+
+INSERT INTO authorities(id, name)
+values (1, 'ADMIN');
+
+INSERT INTO users_authorities(user_id, authority_id)
+values (1122, 1);
 
 INSERT INTO companies
-VALUES (id = 1, name = 'google', email = 'google@gmail.com', 'not provided');
+VALUES ( 1, 'google', 'google@gmail.com', 'not provided');
 
 INSERT INTO employees
-VALUES (id = 001, companyId = 1, name = 'John', surname = 'Doe', phone_number = 'not provided',
-        email = 'JohnDoe@gmail.com');
+VALUES (001, 1,'John', 'Doe', 'not provided',
+        'JohnDoe@gmail.com');

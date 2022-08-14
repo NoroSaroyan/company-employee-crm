@@ -1,13 +1,19 @@
 package ru.project.entity;
 
 import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@ToString
 public class User {
     @Id
     @Column(name = "id", unique = true)
@@ -23,7 +29,11 @@ public class User {
     private String password;
 
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+    @JoinTable(name = "users_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    @ToString.Exclude
+    private List<Authority> authorities;
 
     public void setEmail(String email) {
         this.email = email;
@@ -45,6 +55,10 @@ public class User {
         return id;
     }
 
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,7 +77,4 @@ public class User {
         return result;
     }
 
-    public Collection<Role> getRoles() {
-        return this.roles;
-    }
 }
