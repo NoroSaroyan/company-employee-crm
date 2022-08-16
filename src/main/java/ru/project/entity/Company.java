@@ -21,4 +21,8 @@ public class Company {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany
+    private List<Employee> employees;
+
 }
