@@ -25,4 +25,5 @@ public class Company {
     @OneToMany
     private List<Employee> employees;
 
+
 }
