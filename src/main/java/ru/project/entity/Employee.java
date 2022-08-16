@@ -47,7 +47,7 @@ public class Employee {
         this.surname = surname;
     }
 
-    public void setCompanyId(Company company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 
