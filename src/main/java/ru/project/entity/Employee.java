@@ -1,18 +1,12 @@
 package ru.project.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.data.repository.NoRepositoryBean;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "employees")
 @Getter
-@Setter
 public class Employee {
 
     @Id

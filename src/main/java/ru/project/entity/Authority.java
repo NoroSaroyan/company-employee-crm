@@ -1,12 +1,14 @@
 package ru.project.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "authorities")
-@Data
+@Getter
 public class Authority {
 
     @Id
