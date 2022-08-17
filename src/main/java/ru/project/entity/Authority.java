@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "authorities")
 @Getter
+@Setter
 public class Authority {
 
     @Id
@@ -16,5 +17,7 @@ public class Authority {
     Long id;
 
     String name;
+
+
 
 }
