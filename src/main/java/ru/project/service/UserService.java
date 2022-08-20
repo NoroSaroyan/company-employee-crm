@@ -1,53 +1,36 @@
 package ru.project.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.project.entity.User;
+import ru.project.repository.AuthorityRepository;
 import ru.project.repository.UserRepository;
-
-import javax.swing.text.html.Option;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service("userService")
 public class UserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserRepository repository;
+    private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, AuthorityRepository authorityRepository) {
         this.repository = repository;
-    }
-
-    public void delete(User entity) {
-        if (entity != null) {
-            repository.delete(entity);
-        } else {
-            throw new RuntimeException("Null entity");
-        }
-    }
-
-    //IDK?
-    public boolean update(User entity) {
-//        Optional<User> mayBeUser = repository.getById(entity.getId());
-//        if (mayBeUser.isEmpty()){
-//            throw new RuntimeException();
-//        }else{
-//            mayBeUser.get().setEmail(entity.getEmail());
-//            mayBeUser.get().setPassword(entity.getPassword());
-//            repository.save(mayBeUser.get());
-//        }
-        if (repository.getById(entity.getId()).isPresent()) {
-            repository.getById(entity.getId()).get().setEmail(entity.getEmail());
-            repository.getById(entity.getId()).get().setPassword(entity.getPassword());
-            return true;
-        }
-        return false;
-    }
-
-    public void add(User user) {
-        if (user != null) {
-            repository.save(user);
-        }
+        this.authorityRepository = authorityRepository;
     }
 
     public Optional<User> get(Long id){
         return repository.findById(id);
+    }
+
+    public void save(User user){
+        authorityRepository.saveAll(user.getAuthorities());
+        repository.save(user);
+    }
+
+    public Optional<User> findByEmail(String email){
+        return Optional.ofNullable(repository.findByEmail(email).orElseThrow(()
+                -> new UsernameNotFoundException("No User found for" + email)));
     }
 }

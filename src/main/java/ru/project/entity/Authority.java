@@ -1,8 +1,6 @@
 package ru.project.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,14 +8,17 @@ import javax.persistence.*;
 @Table(name = "authorities")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Authority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
-
-
+    public Authority(String name) {
+        this.name = name;
+    }
 }
