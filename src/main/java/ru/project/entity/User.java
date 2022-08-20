@@ -1,8 +1,9 @@
 package ru.project.entity;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -12,8 +13,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Getter
-@Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @Column(name = "id", unique = true)
@@ -34,6 +36,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     @ToString.Exclude
     private List<Authority> authorities;
+
+    public User(String email, String password, List<Authority> authorities) {
+        setEmail(email);
+        setPassword(password);
+        setAuthorities(authorities);
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -57,6 +65,10 @@ public class User {
 
     public List<Authority> getAuthorities() {
         return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override

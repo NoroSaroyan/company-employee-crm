@@ -15,6 +15,7 @@ public class HomepageController {
     public String homePage(Model model , Principal principal){
         return "home";
     }
+
     @RequestMapping("/login")
     public String authorise(){
         return "login";

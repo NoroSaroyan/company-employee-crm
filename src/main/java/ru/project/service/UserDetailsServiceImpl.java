@@ -17,17 +17,18 @@ import java.util.stream.Collectors;
 
 @Service("UserDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final UserService userService;
+
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> mayBeUser = userRepository.findByEmail(email);
+        Optional<User> mayBeUser = userService.findByEmail(email);
 
         if (mayBeUser.isEmpty()) {
-            throw new UsernameNotFoundException(email);
+            throw new UsernameNotFoundException("No user found for " + email);
         }
 
         User user = mayBeUser.get();
@@ -40,8 +41,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .build();
     }
 
-    public boolean checkByEmail(String email) {
-        return userRepository.findByEmail(email).isPresent();
-    }
+//    public boolean checkByEmail(String email) {
+//        return userRepository.findByEmail(email).isPresent();
+//    }
 
 }
