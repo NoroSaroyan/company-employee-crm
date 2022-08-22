@@ -34,7 +34,6 @@ public class UserRepositoryIntegrationTest {
     @BeforeAll
     public void setup() {
         User user = UserUtils.getTestUser();
-        authorityRepository.save(user.getAuthorities().get(0));
         service.save(user);
     }
 
@@ -51,6 +50,5 @@ public class UserRepositoryIntegrationTest {
         Assertions.assertEquals(1,got.get().getAuthorities().size(),"Authority list size ");
         Assertions.assertEquals("ADMIN",got.get().getAuthorities().get(0).getName(),"Authority name");
     }
-
 
 }
