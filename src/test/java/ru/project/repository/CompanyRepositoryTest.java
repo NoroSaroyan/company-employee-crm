@@ -1,6 +1,5 @@
 package ru.project.repository;
 
-import net.bytebuddy.dynamic.DynamicType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,9 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
-import ru.project.utils.EmployeeUtils;
-
-import javax.swing.text.html.Option;
 
 
 @DataJpaTest
@@ -46,23 +42,11 @@ public class CompanyRepositoryTest {
     public void getCompany() {
         Long id = 1L;
         Optional<Company> got = companyService.getById(id);
-        Employee testEmployee = EmployeeUtils.getTestEmployee();
 
         Assertions.assertTrue(got.isPresent(), "company should exist in the database");
         Assertions.assertEquals(1L, got.get().getId(), "Ids are not the same");
         Assertions.assertEquals("company@test.com", got.get().getEmail(), "Email's are not the same ");
         Assertions.assertEquals("testCompany.com", got.get().getWebsite(), "Websites are not the same");
-
-
-//        Assertions.assertEquals(1,got.get().getEmployees().size(),"Number of Employees are not the same");
-
-        // asserting employee
-//        Assertions.assertEquals(testEmployee.getName(),got.get().getEmployees().get(0).getName(),"Employee names are not the same");
-//        Assertions.assertEquals(testEmployee.getSurname(),got.get().getEmployees().get(0).getSurname(),"Employee surnames are not the same");
-//        Assertions.assertEquals(1L,got.get().getEmployees().get(0).getId(),"Employee Ids are not the same");
-//        Assertions.assertEquals(testEmployee.getEmail(),got.get().getEmployees().get(0).getEmail(),"Employee Emails are not the same");
-//        Assertions.assertEquals(testEmployee.getPhone_number()
-//                ,got.get().getEmployees().get(0).getPhone_number(),"Employee Phone numbers are not the same");
 
     }
 
