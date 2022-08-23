@@ -20,8 +20,8 @@ public class CompanyService {
     }
 
     public void save(Company company) {
+        //employeeRepository.saveAll(company.getEmployees());
         companyRepository.save(company);
-        employeeRepository.saveAll(company.getEmployees());
     }
 
     public void delete(Company company) {
@@ -32,7 +32,6 @@ public class CompanyService {
         companyRepository.deleteById(id);
     }
 
-    //TODO think of how should edit work.
     public List<Company> getAll() {
         Iterable<Company> companies = companyRepository.findAll();
         List<Company> res = new ArrayList<>();
@@ -44,7 +43,6 @@ public class CompanyService {
 
     public Optional<Company> getById(Long id){
         return companyRepository.findById(id);
-
     }
     public void addEmployee(Long companyId, Long employeeId) {
         Optional<Employee> optEmpl = employeeRepository.findById(employeeId);
@@ -73,7 +71,6 @@ public class CompanyService {
         }
         return error_ids;
     }
-
 
     public void edit(Long id, Company updates) {
         Optional<Company> optComp = companyRepository.findById(id);
