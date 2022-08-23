@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
+import ru.project.exception.CompanyNotFoundException;
 import ru.project.repository.CompanyRepository;
 import ru.project.repository.EmployeeRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +34,18 @@ public class CompanyService {
     }
 
     //TODO think of how should edit work.
-    public void edit(Company company) {
-        // companyRepository.findById(company.getId());
+    public List<Company> getAll() {
+        Iterable<Company> companies = companyRepository.findAll();
+        List<Company> res = new ArrayList<>();
+        for (Company company : companies) {
+            res.add(company);
+        }
+        return res;
+    }
+
+    public Optional<Company> getById(Long id){
+        return companyRepository.findById(id);
+
     }
 
     /*updating companies name.
@@ -108,7 +118,7 @@ public class CompanyService {
     }
 
 
-    public void updateCompany(Long id, Company updates) {
+    public void edit(Long id, Company updates) {
         Optional<Company> optComp = companyRepository.findById(id);
         if (optComp.isPresent()) {
             companyRepository.save(updates);
