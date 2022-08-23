@@ -1,4 +1,4 @@
-package ru.project.repository;
+package ru.project.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import ru.project.CompanyEmployeeCrmApplication;
-import ru.project.service.UserService;
-import ru.project.utils.UserUtils;
+import ru.project.entity.Authority;
 import ru.project.entity.User;
+import ru.project.repository.AuthorityRepository;
+import ru.project.service.UserService;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @DataJpaTest
@@ -32,6 +34,7 @@ public class UserRepositoryIntegrationTest {
     @BeforeAll
     public void setup() {
         User user = UserUtils.getTestUser();
+        authorityRepository.save(user.getAuthorities().get(0));
         service.save(user);
     }
 
@@ -48,7 +51,6 @@ public class UserRepositoryIntegrationTest {
         Assertions.assertEquals(1,got.get().getAuthorities().size(),"Authority list size ");
         Assertions.assertEquals("ADMIN",got.get().getAuthorities().get(0).getName(),"Authority name");
     }
-
 
 
 }
