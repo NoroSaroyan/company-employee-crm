@@ -2,12 +2,14 @@ package ru.project.repository;
 
 import lombok.NonNull;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.project.entity.Company;
+
 import java.util.Optional;
 
 @Repository
-public interface CompanyRepository extends CrudRepository<Company,Long> {
+public interface CompanyRepository extends PagingAndSortingRepository<Company, Long> {
 
     @Override
     Optional<Company> findById(@NonNull Long id);
