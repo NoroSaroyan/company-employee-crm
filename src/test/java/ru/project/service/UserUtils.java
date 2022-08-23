@@ -1,4 +1,4 @@
-package ru.project.utils;
+package ru.project.service;
 
 import ru.project.entity.Authority;
 import ru.project.entity.User;
