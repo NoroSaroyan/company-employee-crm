@@ -78,7 +78,7 @@ public class CompanyController {
     @DeleteMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String delete(@PathVariable("id") Long companyId) {
-        companyService.delete(companyId);
+        companyService.deleteById(companyId);
         return "redirect:/companies/";
     }
 

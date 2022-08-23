@@ -1,10 +1,8 @@
 package ru.project.service;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
-import ru.project.exception.CompanyNotFoundException;
 import ru.project.repository.CompanyRepository;
 import ru.project.repository.EmployeeRepository;
 import java.util.ArrayList;
@@ -23,13 +21,14 @@ public class CompanyService {
 
     public void save(Company company) {
         companyRepository.save(company);
+        employeeRepository.saveAll(company.getEmployees());
     }
 
     public void delete(Company company) {
         companyRepository.delete(company);
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         companyRepository.deleteById(id);
     }
 
@@ -47,48 +46,6 @@ public class CompanyService {
         return companyRepository.findById(id);
 
     }
-
-    /*updating companies name.
-    name: company's new name
-    id: company's id which name should be updated
-     */
-    @Modifying
-    public void updateName(Long id, String name) {
-        Optional<Company> optComp = companyRepository.findById(id);
-        if (optComp.isPresent()) {
-            Company toBeUpdated = optComp.get();
-            toBeUpdated.setName(name);
-            companyRepository.save(toBeUpdated);
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
-    @Modifying
-    public void updateWebsite(Long id, String website) {
-        Optional<Company> optComp = companyRepository.findById(id);
-        if (optComp.isPresent()) {
-            Company toBeUpdated = optComp.get();
-            toBeUpdated.setWebsite(website);
-            companyRepository.save(toBeUpdated);
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
-    @Modifying
-//    @Query("update companies c set c.email = :email where c.id = :id")
-    public void updateEmail(Long id, String email) {
-        Optional<Company> optComp = companyRepository.findById(id);
-        if (optComp.isPresent()) {
-            Company toBeUpdated = optComp.get();
-            toBeUpdated.setEmail(email);
-            companyRepository.save(toBeUpdated);
-        } else {
-            throw new RuntimeException();
-        }
-    }
-
     public void addEmployee(Long companyId, Long employeeId) {
         Optional<Employee> optEmpl = employeeRepository.findById(employeeId);
         Optional<Company> optComp = companyRepository.findById(companyId);
