@@ -3,6 +3,7 @@ package ru.project.service;
 import org.springframework.stereotype.Service;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
+import ru.project.exception.CompanyNotFoundException;
 import ru.project.repository.CompanyRepository;
 import ru.project.repository.EmployeeRepository;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class CompanyService {
         return res;
     }
 
-    public Optional<Company> getById(Long id){
+    public Optional<Company> getById(Long id) {
         return companyRepository.findById(id);
     }
     public void addEmployee(Long companyId, Long employeeId) {

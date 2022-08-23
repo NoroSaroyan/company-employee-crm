@@ -10,8 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.project.entity.Company;
+import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Controller
@@ -54,7 +56,6 @@ public class CompanyController {
             model.addAttribute("method", "edit");
             return "company";
         } else {
-            //
             return HttpStatus.NOT_FOUND.name();
         }
     }

@@ -48,6 +48,7 @@ public class CompanyRepositoryTest {
         Assertions.assertEquals("company@test.com", got.get().getEmail(), "Email's are not the same ");
         Assertions.assertEquals("testCompany.com", got.get().getWebsite(), "Websites are not the same");
 
+
     }
 
     @Test
