@@ -1,7 +1,6 @@
 package ru.project.utils;
 
 import ru.project.entity.Company;
-import ru.project.entity.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,4 +22,5 @@ public class CompanyUtils {
 
         return companyList;
     }
+
 }

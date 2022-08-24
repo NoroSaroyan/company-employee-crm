@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import ru.project.CompanyEmployeeCrmApplication;
 import ru.project.entity.Company;
-import ru.project.entity.Employee;
 import ru.project.service.CompanyService;
 import ru.project.utils.CompanyUtils;
 
@@ -22,68 +21,70 @@ import org.junit.jupiter.api.Assertions;
 @DataJpaTest
 @ContextConfiguration(classes = {CompanyService.class, CompanyEmployeeCrmApplication.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CompanyRepositoryTest {
+public class CompanyRepositoryIntegrationTest {
 
     private final CompanyService companyService;
 
+    private Company testCompany;
 
     @Autowired
-    public CompanyRepositoryTest(CompanyService companyService) {
+    public CompanyRepositoryIntegrationTest(CompanyService companyService) {
         this.companyService = companyService;
     }
 
     @BeforeAll
     public void setup() {
-        companyService.save(CompanyUtils.getTestCompany());
+        testCompany = CompanyUtils.getTestCompany();
+        companyService.save(testCompany);
     }
 
     @Test
     @DisplayName("get company from database")
     public void getCompany() {
         Long id = 1L;
-        Optional<Company> got = companyService.getById(id);
+        Optional<Company> got = companyService.findById(id);
 
         Assertions.assertTrue(got.isPresent(), "company should exist in the database");
         Assertions.assertEquals(1L, got.get().getId(), "Ids are not the same");
-        Assertions.assertEquals("company@test.com", got.get().getEmail(), "Email's are not the same ");
+        Assertions.assertEquals(testCompany.getEmail(), got.get().getEmail(), "Email's are not the same ");
         Assertions.assertEquals("testCompany.com", got.get().getWebsite(), "Websites are not the same");
-
 
     }
 
     @Test
     @DisplayName("delete company from database")
     public void deleteCompany() {
-        Long id = 1L;
-        Optional<Company> got = companyService.getById(1L);
-        got.ifPresent(companyService::delete);
+        Long id = testCompany.getId();
+        companyService.deleteById(id);
 
-        Assertions.assertEquals(Optional.empty(), companyService.getById(1L), "User still exists");
+        Assertions.assertTrue(companyService.existsById(1L), "Company still exists");
     }
 
     @Test
     @DisplayName("get All companies from database")
     public void getAll() {
-        List<Company> companyList = companyService.getAll();
-
+        List<Company> companyList = companyService.findAll(2, 10);
         Assertions.assertFalse(companyList.isEmpty(), "list is null");
     }
 
     @Test
-    @DisplayName("edit company")
-    public void edit() {
-        Company company;
-        Optional<Company> got = companyService.getById(1L);
-        if (got.isPresent()) {
-            company = got.get();
-            Long id = got.get().getId();
-            company.setName("googleTest");
-            companyService.edit(got.get().getId(), company);
+    @DisplayName("Company update")
+    public void update() {
+        Company company = new Company(2L,"amazon","amazon.com","amazon@gmail.com");
 
-            Optional<Company> updated = companyService.getById(id);
-            updated.ifPresent(value -> Assertions.assertEquals
-                    ("googleTest", updated.get().getName(),"Company names aren't the same "));
+        testCompany.setName(company.getName());
+        testCompany.setWebsite(company.getWebsite());
+        testCompany.setEmail(company.getEmail());
+        companyService.update(testCompany);
+
+        Optional<Company> got = companyService.findById(testCompany.getId());
+
+        if (got.isPresent()) {
+            Assertions.assertEquals(company.getName(), got.get().getName(), "Names are not the same");
+            Assertions.assertEquals(company.getWebsite(), got.get().getWebsite(), "websites are not the same");
+            Assertions.assertEquals(company.getEmail(), got.get().getEmail(), "emails are not the same");
         }
+
     }
 
 }
