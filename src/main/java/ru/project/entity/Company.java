@@ -12,13 +12,14 @@ import java.util.List;
 @Table(name = "companies")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Company {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name",unique = true)
+    @Column(name = "name", unique = true)
     @NotNull
     private String name;
 
@@ -68,8 +69,8 @@ public class Company {
     }
 
     //Testing purposes only
-    public Company(Long id , String name, String website, String email) {
-
+    public Company(Long id, String name, String website, String email) {
+        this.id = id;
         this.name = name;
         this.website = website;
         this.email = email;
