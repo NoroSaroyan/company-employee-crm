@@ -35,6 +35,8 @@ class UserDetailsServiceImplTest {
         UserDetails userDetails = userDetailsService.loadUserByUsername("test@gmail.com");
         assertThat(userDetails).isNotNull();
         assertThat(userDetails.getAuthorities().iterator().next().getAuthority()).isEqualTo("ROLE_ADMIN");
+        assertThat(userDetails.getUsername()).isEqualTo("test@gmail.com");
+        assertThat(userDetails.getPassword()).isEqualTo("password");
 
     }
 
