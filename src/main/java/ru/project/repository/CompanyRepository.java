@@ -16,7 +16,6 @@ public interface CompanyRepository extends PagingAndSortingRepository<Company, L
     @Override
     Optional<Company> findById(@NonNull Long id);
 
-
     Optional<Company> findByName(String name);
 
     @Override
@@ -25,9 +24,9 @@ public interface CompanyRepository extends PagingAndSortingRepository<Company, L
     @Override
     void deleteById(@NonNull Long id);
 
-    @Modifying
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE Company c set c.name=:name, c.website=:website, c.email=:email where c.id =:companyId")
-    void update(@Param("companyId") Long id,@Param("name") String name, @Param("website") String website, @Param("email") String email);
+    void update(@Param("companyId") Long id, @Param("name") String name, @Param("website") String website, @Param("email") String email);
 
 
 }

@@ -1,9 +1,11 @@
 package ru.project.repository;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import ru.project.CompanyEmployeeCrmApplication;
@@ -16,11 +18,11 @@ import java.util.Optional;
 
 @DataJpaTest
 @ContextConfiguration(classes = {CompanyService.class, CompanyEmployeeCrmApplication.class})
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-@Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CompanyRepositoryIntegrationTest {
 
     private final CompanyService companyService;
+
 
     private Company testCompany;
 
@@ -29,36 +31,17 @@ public class CompanyRepositoryIntegrationTest {
         this.companyService = companyService;
     }
 
-    //    @BeforeAll
-//    public void setup() {
-//        List<Company> testList = CompanyUtils.getTestCompanyList();
-//
-//        for (Company company : testList) {
-//            companyService.save(company);
-//        }
-//        List<Company> got = companyService.findAll(0, 10);
-//        System.out.println();
-//    }
-    @BeforeEach
-    public void beforeEach() {
+    public void insertCompany() {
         testCompany = CompanyUtils.getTestCompany();
-
         companyService.save(testCompany);
-    }
-
-    @AfterEach
-    public void flush() {
-        try {
-            companyService.deleteById(testCompany.getId());
-        } catch (EmptyResultDataAccessException ignored) {
-
-        }
     }
 
 
     @Test
     @DisplayName("check company in database")
+    @Transactional
     public void checkCompanyExists() {
+        insertCompany();
         Long id = testCompany.getId();
         Optional<Company> got = companyService.findById(id);
 
@@ -66,55 +49,33 @@ public class CompanyRepositoryIntegrationTest {
         Assertions.assertEquals(testCompany.getId(), got.get().getId(), "Ids are not the same");
         Assertions.assertEquals(testCompany.getEmail(), got.get().getEmail(), "Email's are not the same ");
         Assertions.assertEquals(testCompany.getWebsite(), got.get().getWebsite(), "Websites are not the same");
-
     }
 
     @Test
     @DisplayName("delete company from database")
+    @Transactional
     public void deleteCompany() {
-//        Company company = new Company(2L, "youtube", "youtube.com", "youtube@gmail.com");
-
+        insertCompany();
         companyService.deleteById(testCompany.getId());
-
         Assertions.assertFalse(companyService.existsById(testCompany.getId()), "Company still exists");
     }
 
-
     @Test
     @DisplayName("Company update")
-    public void update() throws InterruptedException {
-        Company company = testCompany;
+    @Transactional
+    public void update() {
+        insertCompany();
 
-        company.setName("updatedName");
-        company.setEmail("updatedEmail@gmail.com");
-        company.setWebsite("updatedWebsite.com");
+        testCompany.setName("updatedName");
+        testCompany.setEmail("updatedEmail@gmail.com");
+        testCompany.setWebsite("updatedWebsite.com");
+        companyService.update(testCompany);
 
-        companyService.update(company);
-
-//        List<Company> all = companyService.findAll(0, 10);
-//        System.out.println("\n\n\n\n\n\n\n\n");
-//        System.out.println("Size = " + all.size());
-//
-//        System.out.println(Arrays.toString(all.stream().map(m -> m.toString() + "\n").toArray()));
-//
-//        System.out.println("\n\n\n\n\n\n\n\n");
-
-
-        Optional<Company> got = companyService.findById(company.getId());
-
-//        for (int i = 0; i < 1; i++) {
-//            System.out.println(i);
-//            if (companyService.findById(company.getId()).isEmpty()) {
-//                Thread.sleep(1000);
-//            }
-//
-//        }
-
+        Optional<Company> got = companyService.findById(testCompany.getId());
         Assertions.assertTrue(got.isPresent(), "company should exist");
-
-        Assertions.assertEquals(company.getName(), got.get().getName(), "Names are not the same");
-        Assertions.assertEquals(company.getWebsite(), got.get().getWebsite(), "websites are not the same");
-        Assertions.assertEquals(company.getEmail(), got.get().getEmail(), "emails are not the same");
+        Assertions.assertEquals(testCompany.getName(), got.get().getName(), "Names are not the same");
+        Assertions.assertEquals(testCompany.getWebsite(), got.get().getWebsite(), "websites are not the same");
+        Assertions.assertEquals(testCompany.getEmail(), got.get().getEmail(), "emails are not the same");
 
     }
 

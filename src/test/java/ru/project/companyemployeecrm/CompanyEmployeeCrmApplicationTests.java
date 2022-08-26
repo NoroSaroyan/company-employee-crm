@@ -6,7 +6,7 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @TestPropertySource(value = "classpath:application-test.properties")
-class CompanyEmployeeCrmApplicationTests {
+public class CompanyEmployeeCrmApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -22,7 +22,6 @@ public class CompanyService {
     }
 
     public void save(Company company) {
-        //employeeRepository.saveAll(company.getEmployees());
         companyRepository.save(company);
     }
 

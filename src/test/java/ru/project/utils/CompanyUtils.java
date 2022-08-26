@@ -4,12 +4,10 @@ import ru.project.entity.Company;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class CompanyUtils {
     private static Long aLong = 1L;
     public static Company getTestCompany() {
-
         return new Company(aLong++,"testCompany","testCompany.com","company@test.com");
     }
 
