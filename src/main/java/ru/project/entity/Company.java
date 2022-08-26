@@ -68,9 +68,7 @@ public class Company {
         this.employees = employees;
     }
 
-    //Testing purposes only
-    public Company(Long id, String name, String website, String email) {
-        this.id = id;
+    public Company( String name, String website, String email) {
         this.name = name;
         this.website = website;
         this.email = email;

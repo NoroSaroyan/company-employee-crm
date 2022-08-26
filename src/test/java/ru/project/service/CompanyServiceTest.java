@@ -37,7 +37,7 @@ public class CompanyServiceTest {
         given(companyService.findById(any()))
                 .willReturn(Optional.of(
                         new Company(
-                                1L, "testCompany", "testWebsite.com", "test@gmail.com")));
+                                 "testCompany", "testWebsite.com", "test@gmail.com")));
 
         Optional<Company> got = companyService.findById(1L);
         assertTrue(got.isPresent(), "company should not be empty");
@@ -47,35 +47,6 @@ public class CompanyServiceTest {
         assertThat(company.getEmail()).isEqualTo(("test@gmail.com"));
     }
 
-
-    // Won't add id to object
-//    @Test
-//    @DisplayName("can get all companies")
-//    void getAll() {
-//        List<Company> companyList = CompanyUtils.getTestCompanyList();
-//
-//        given(companyService.findAll(any(),any())).willReturn(companyList);
-//
-//        List<Company> got = companyService.findAll(2,10);
-//
-//        assertThat(got).isNotNull();
-//        assertFalse(got.isEmpty(),"Company list shouldn't be empty");
-//
-////        assertThat(companyList.get(0).getId()).isEqualTo(1L);
-//        assertThat(companyList.get(0).getName()).isEqualTo("google");
-//        assertThat(companyList.get(0).getWebsite()).isEqualTo("google.com");
-//        assertThat(companyList.get(0).getEmail()).isEqualTo("google@gmail.com");
-//
-////        assertThat(companyList.get(1).getId()).isEqualTo(2L);
-//        assertThat(companyList.get(1).getName()).isEqualTo("yandex");
-//        assertThat(companyList.get(1).getWebsite()).isEqualTo("yandex.ru");
-//        assertThat(companyList.get(1).getEmail()).isEqualTo("company@yandex.ru");
-//
-////        assertThat(companyList.get(2).getId()).isEqualTo(3L);
-//        assertThat(companyList.get(2).getName()).isEqualTo("VK");
-//        assertThat(companyList.get(2).getWebsite()).isEqualTo("vk.com");
-//        assertThat(companyList.get(2).getEmail()).isEqualTo("vk@gmail.com");
-//    }
 
     @Test
     @DisplayName("find all companies")
