@@ -55,17 +55,17 @@ public class CompanyServiceTest {
         assertThat(got.get().getEmail()).isEqualTo(("test@gmail.com"));
         assertThat(got.get().getEmployees()).isNotNull();
 
-        assertEquals(1,got.get().getEmployees().size(),"employees list size are not the same");
+        assertEquals(1, got.get().getEmployees().size(), "employees list size are not the same");
 
-        assertEquals(employee.getName(),got.get().getEmployees().get(0).getName(),
-               "employee's names are not the same");
-        assertEquals(employee.getSurname(),got.get().getEmployees().get(0).getSurname(),
+        assertEquals(employee.getName(), got.get().getEmployees().get(0).getName(),
+                "employee's names are not the same");
+        assertEquals(employee.getSurname(), got.get().getEmployees().get(0).getSurname(),
                 "employee's surnames are not the same");
 
-        assertEquals(employee.getEmail(),got.get().getEmployees().get(0).getEmail(),
+        assertEquals(employee.getEmail(), got.get().getEmployees().get(0).getEmail(),
                 "employee's emails are not the same");
 
-        assertEquals(employee.getPhone_number(),got.get().getEmployees().get(0).getPhone_number(),
+        assertEquals(employee.getPhone_number(), got.get().getEmployees().get(0).getPhone_number(),
                 "employee's phone numbers are not the same");
     }
 
@@ -91,19 +91,16 @@ public class CompanyServiceTest {
 
         assertThat(got).isNotNull();
         assertEquals(3, got.size(), "list size should be 3");
+        assertEquals(1, got.get(0).getEmployees().size(), "Companies should have 1 employee");
 
-        assertEquals(compareTo.get(0).getName(), got.get(0).getName(), "Company names are not the same");
-        assertEquals(compareTo.get(0).getEmail(), got.get(0).getEmail(), "Company emails are not the same");
-        assertEquals(compareTo.get(0).getWebsite(), got.get(0).getWebsite(), "Company websites are not the same");
-
-        assertEquals(compareTo.get(1).getName(), got.get(1).getName(), "Company names are not the same");
-        assertEquals(compareTo.get(1).getEmail(), got.get(1).getEmail(), "Company emails are not the same");
-        assertEquals(compareTo.get(1).getWebsite(), got.get(1).getWebsite(), "Company emails are not the same");
-
-        assertEquals(compareTo.get(2).getName(), got.get(2).getName(), "Company names are not the same");
-        assertEquals(compareTo.get(2).getEmail(), got.get(2).getEmail(), "Company emails are not the same");
-        assertEquals(compareTo.get(2).getWebsite(), got.get(2).getWebsite(), "Company emails are not the same");
-
+        for (int i = 0; i < companies.size(); i++) {
+            assertEquals(compareTo.get(i).getName(), got.get(i).getName(), "Company names are not the same");
+            assertEquals(compareTo.get(i).getEmail(), got.get(i).getEmail(), "Company emails are not the same");
+            assertEquals(compareTo.get(i).getWebsite(), got.get(i).getWebsite(), "Company websites are not the same");
+            for (int j = 0; j < 1; j++) {
+                assertEquals(got.get(i).getEmployees().get(j), compareTo.get(i).getEmployees().get(j));
+            }
+        }
     }
 
     @Test
