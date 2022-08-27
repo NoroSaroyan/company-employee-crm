@@ -10,14 +10,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.project.entity.Company;
+import ru.project.entity.Employee;
 import ru.project.repository.CompanyRepository;
 import ru.project.utils.CompanyUtils;
+import ru.project.utils.EmployeeUtils;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -34,44 +40,69 @@ public class CompanyServiceTest {
     @Test
     @DisplayName("can get existing company")
     void getByIdFound() {
-        given(companyService.findById(any()))
-                .willReturn(Optional.of(
-                        new Company(
-                                 "testCompany", "testWebsite.com", "test@gmail.com")));
+
+        Employee employee = EmployeeUtils.getTestEmployee();
+        Company company = new Company("testCompany", "testWebsite.com", "test@gmail.com");
+        company.setEmployees(List.of(employee));
+
+        given(companyService.findById(any())).willReturn(Optional.of(company));
 
         Optional<Company> got = companyService.findById(1L);
+
         assertTrue(got.isPresent(), "company should not be empty");
-        Company company = got.get();
-        assertThat(company.getName()).isEqualTo(("testCompany"));
-        assertThat(company.getWebsite()).isEqualTo(("testWebsite.com"));
-        assertThat(company.getEmail()).isEqualTo(("test@gmail.com"));
+        assertThat(got.get().getName()).isEqualTo(("testCompany"));
+        assertThat(got.get().getWebsite()).isEqualTo(("testWebsite.com"));
+        assertThat(got.get().getEmail()).isEqualTo(("test@gmail.com"));
+        assertThat(got.get().getEmployees()).isNotNull();
+
+        assertEquals(1,got.get().getEmployees().size(),"employees list size are not the same");
+
+        assertEquals(employee.getName(),got.get().getEmployees().get(0).getName(),
+               "employee's names are not the same");
+        assertEquals(employee.getSurname(),got.get().getEmployees().get(0).getSurname(),
+                "employee's surnames are not the same");
+
+        assertEquals(employee.getEmail(),got.get().getEmployees().get(0).getEmail(),
+                "employee's emails are not the same");
+
+        assertEquals(employee.getPhone_number(),got.get().getEmployees().get(0).getPhone_number(),
+                "employee's phone numbers are not the same");
     }
 
 
     @Test
     @DisplayName("find all companies")
     void findAll() {
+        List<Company> companies = CompanyUtils.getTestCompanyList();
+        List<Employee> employees = EmployeeUtils.getTestEmployeeList();
+
+        List<Company> compareTo = CompanyUtils.getTestCompanyList();
+
+        for (int i = 0; i < companies.size(); i++) {
+            companies.get(i).setEmployees(List.of(employees.get(i)));
+            compareTo.get(i).setEmployees(List.of(employees.get(i)));
+        }
+
 
         given(companyService.findAll(anyInt(), anyInt())).
-                willReturn(CompanyUtils.getTestCompanyList());
+                willReturn(companies);
 
-        List<Company> utils = CompanyUtils.getTestCompanyList();
         List<Company> got = companyService.findAll(2, 10);
 
         assertThat(got).isNotNull();
         assertEquals(3, got.size(), "list size should be 3");
 
-        assertEquals(utils.get(0).getName(), got.get(0).getName(), "Company names are not the same");
-        assertEquals(utils.get(0).getEmail(), got.get(0).getEmail(), "Company emails are not the same");
-        assertEquals(utils.get(0).getWebsite(), got.get(0).getWebsite(), "Company websites are not the same");
+        assertEquals(compareTo.get(0).getName(), got.get(0).getName(), "Company names are not the same");
+        assertEquals(compareTo.get(0).getEmail(), got.get(0).getEmail(), "Company emails are not the same");
+        assertEquals(compareTo.get(0).getWebsite(), got.get(0).getWebsite(), "Company websites are not the same");
 
-        assertEquals(utils.get(1).getName(), got.get(1).getName(), "Company names are not the same");
-        assertEquals(utils.get(1).getEmail(), got.get(1).getEmail(), "Company emails are not the same");
-        assertEquals(utils.get(1).getWebsite(), got.get(1).getWebsite(), "Company emails are not the same");
+        assertEquals(compareTo.get(1).getName(), got.get(1).getName(), "Company names are not the same");
+        assertEquals(compareTo.get(1).getEmail(), got.get(1).getEmail(), "Company emails are not the same");
+        assertEquals(compareTo.get(1).getWebsite(), got.get(1).getWebsite(), "Company emails are not the same");
 
-        assertEquals(utils.get(2).getName(), got.get(2).getName(), "Company names are not the same");
-        assertEquals(utils.get(2).getEmail(), got.get(2).getEmail(), "Company emails are not the same");
-        assertEquals(utils.get(2).getWebsite(), got.get(2).getWebsite(), "Company emails are not the same");
+        assertEquals(compareTo.get(2).getName(), got.get(2).getName(), "Company names are not the same");
+        assertEquals(compareTo.get(2).getEmail(), got.get(2).getEmail(), "Company emails are not the same");
+        assertEquals(compareTo.get(2).getWebsite(), got.get(2).getWebsite(), "Company emails are not the same");
 
     }
 
@@ -79,6 +110,13 @@ public class CompanyServiceTest {
     @DisplayName("find all companies")
     void findAll2() {
         List<Company> companies = CompanyUtils.getTestCompanyList();
+        List<Employee> employees = EmployeeUtils.getTestEmployeeList();
+
+        for (int i = 0; i < companies.size(); i++) {
+            companies.get(i).setEmployees(List.of(employees.get(i)));
+        }
+
+
         CompanyService service = new CompanyService(companyRepository, null);
         Page<Company> companyPage = new PageImpl<>(companies, PageRequest.of(2, 10), companies.size());
 
@@ -88,11 +126,12 @@ public class CompanyServiceTest {
         then(companyRepository).should().findAll(PageRequest.of(2, 10));
 
     }
+
     @Test
     @DisplayName("find all companies")
     void findAll_checkThatSizeLessThan10() {
         CompanyService service = new CompanyService(companyRepository, null);
-        Page<Company> companyPage = new PageImpl<>(Collections.emptyList(), PageRequest.of(2, 10),0);
+        Page<Company> companyPage = new PageImpl<>(Collections.emptyList(), PageRequest.of(2, 10), 0);
 
         given(companyRepository.findAll(any(PageRequest.class))).willReturn(companyPage);
 
