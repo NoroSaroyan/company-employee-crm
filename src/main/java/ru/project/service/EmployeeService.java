@@ -8,15 +8,12 @@ import ru.project.repository.EmployeeRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service("employeeService")
+@Service
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
-    private final CompanyService companyService;
-
-    public EmployeeService(EmployeeRepository employeeRepository, CompanyService companyService) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.companyService = companyService;
     }
 
     public List<Employee> findAll(int page, int size) {
@@ -30,6 +27,10 @@ public class EmployeeService {
 
     public void save(Employee employee) {
         employeeRepository.save(employee);
+    }
+
+    public void saveAll(List<Employee> employees){
+        employeeRepository.saveAll(employees);
     }
 
     public Optional<Employee> findById(Long id) {
@@ -49,4 +50,7 @@ public class EmployeeService {
         return employeeRepository.existsById(id);
     }
 
+    public void deleteById(Long id){
+        employeeRepository.deleteById(id);
+    }
 }

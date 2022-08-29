@@ -29,7 +29,7 @@ public class Company {
     @Column(name = "email")
     private String email;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Employee> employees;
 
     public Long getId() {
