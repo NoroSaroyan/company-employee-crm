@@ -41,7 +41,7 @@ public class EmployeeRepositoryIntegrationTest {
         companyService.save(testCompany);
 
         testEmployee = EmployeeUtils.getTestEmployee();
-        testEmployee.setCompany(companyService.findAll(0,10).get(0));
+        testEmployee.setCompany(companyService.findAll(0, 10).get(0));
         employeeService.save(testEmployee);
     }
 
@@ -75,8 +75,8 @@ public class EmployeeRepositoryIntegrationTest {
     @Transactional
     public void deleteOne() {
         insertEmployee();
-        employeeService.deleteById(1L);
-        Assertions.assertFalse(employeeService.existsById(1L));
+        employeeService.deleteById(testEmployee.getId());
+        Assertions.assertFalse(employeeService.existsById(testCompany.getId()));
     }
 
     @Test
@@ -95,4 +95,24 @@ public class EmployeeRepositoryIntegrationTest {
         Assertions.assertTrue(employeeService.existsById(list.get(2).getId()));
     }
 
+    @Test
+    @DisplayName("update employee")
+    @Transactional
+    public void update() {
+        insertEmployee();
+
+        testEmployee.setName("updatedName");
+        testEmployee.setEmail("updatedEmail@gmail.com");
+        testEmployee.setSurname("updatedSurname");
+        testEmployee.setPhone_number("updatedPhoneNumber");
+        employeeService.update(testEmployee);
+
+        Optional<Employee> got = employeeService.findById(testEmployee.getId());
+        Assertions.assertTrue(got.isPresent(), "employee should exist");
+        Assertions.assertEquals(testEmployee.getName(), got.get().getName(), "Names are not the same");
+        Assertions.assertEquals(testEmployee.getSurname(), got.get().getSurname(), "surnames are not the same");
+        Assertions.assertEquals(testEmployee.getEmail(), got.get().getEmail(), "emails are not the same");
+        Assertions.assertEquals(testEmployee.getPhone_number(), got.get().getPhone_number(), "phone numbers are not the same");
+
+    }
 }
