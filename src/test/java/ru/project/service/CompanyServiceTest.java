@@ -91,21 +91,21 @@ public class CompanyServiceTest {
 
         assertThat(got).isNotNull();
         assertEquals(3, got.size(), "list size should be 3");
-        assertEquals(1, got.get(0).getEmployees().size(), "Companies should have 1 employee");
 
         for (int i = 0; i < companies.size(); i++) {
+            assertEquals(1, got.get(i).getEmployees().size(), "Companies should have 1 employee");
+
             assertEquals(compareTo.get(i).getName(), got.get(i).getName(), "Company names are not the same");
             assertEquals(compareTo.get(i).getEmail(), got.get(i).getEmail(), "Company emails are not the same");
             assertEquals(compareTo.get(i).getWebsite(), got.get(i).getWebsite(), "Company websites are not the same");
-            for (int j = 0; j < 1; j++) {
-                assertEquals(got.get(i).getEmployees().get(j), compareTo.get(i).getEmployees().get(j));
-            }
+
+            assertEquals(got.get(i).getEmployees().get(0), compareTo.get(i).getEmployees().get(0));
         }
     }
 
     @Test
     @DisplayName("find all companies")
-    void findAll2() {
+    void findAllInvalidSize() {
         List<Company> companies = CompanyUtils.getTestCompanyList();
         List<Employee> employees = EmployeeUtils.getTestEmployeeList();
 
@@ -113,20 +113,19 @@ public class CompanyServiceTest {
             companies.get(i).setEmployees(List.of(employees.get(i)));
         }
 
-
         CompanyService service = new CompanyService(companyRepository, null);
         Page<Company> companyPage = new PageImpl<>(companies, PageRequest.of(2, 10), companies.size());
 
         given(companyRepository.findAll(any(PageRequest.class))).willReturn(companyPage);
 
-        List<Company> got = service.findAll(2, 10);
+        List<Company> got = service.findAll(2, 15);
         then(companyRepository).should().findAll(PageRequest.of(2, 10));
 
     }
 
     @Test
     @DisplayName("find all companies")
-    void findAll_checkThatSizeLessThan10() {
+    void findAll_fixSize() {
         CompanyService service = new CompanyService(companyRepository, null);
         Page<Company> companyPage = new PageImpl<>(Collections.emptyList(), PageRequest.of(2, 10), 0);
 
