@@ -23,7 +23,6 @@ public class CompanyRepositoryIntegrationTest {
 
     private final CompanyService companyService;
 
-
     private Company testCompany;
 
     @Autowired

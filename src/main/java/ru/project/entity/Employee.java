@@ -1,12 +1,17 @@
 package ru.project.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "employees")
 @Getter
+@ToString
+@NoArgsConstructor
 public class Employee {
 
     @Id
@@ -76,4 +81,13 @@ public class Employee {
     public String getEmail() {
         return email;
     }
+
+public Employee(String name, String surname, String phone_number, String email){
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phone_number = phone_number;
+
+}
+
 }
