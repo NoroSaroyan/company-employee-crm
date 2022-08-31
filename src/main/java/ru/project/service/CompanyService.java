@@ -9,7 +9,7 @@ import ru.project.repository.EmployeeRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service("companyService")
+@Service()
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
