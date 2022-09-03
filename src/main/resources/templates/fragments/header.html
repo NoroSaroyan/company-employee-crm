@@ -17,15 +17,15 @@
 <body>
 <div th:fragment="header">
     <nav class="navbar navbar-expand-md navbar-bg-gradient-info bg-gradient-info">
-        <a class="active" href="/home"><i class="fa fa-fw fa-home" style="position:relative; left:25px;"></i></a>
+        <a class="active" href="/home"><i class="fa fa-fw fa-home" style="position:relative; left:25px; color: white"></i></a>
         <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarNavAltMarkup" >
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item" style="position:relative; left:45px;" >
-                        <a class="active" th:href="@{/companies}" th:text="Companies"></a>
+                        <a class="active" th:href="@{/companies}" th:text="Companies" style="color: white"></a>
                     </li>
                     <li class="nav-item" style="position:relative; left:65px;">
-                        <a class="active" th:href="@{/employees}" th:text="Employees"></a>
+                        <a class="active" th:href="@{/employees}" th:text="Employees" style="color: white"></a>
                     </li>
                 </ul>
             </div>
