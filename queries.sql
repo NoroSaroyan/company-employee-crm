@@ -31,10 +31,11 @@ CREATE TABLE users_authorities
 (
     user_id BIGINT,
     authority_id BIGINT,
-    CONSTRAINT userId_roleName PRIMARY KEY (user_id, authority_id),
+    CONSTRAINT userId_roleId PRIMARY KEY (user_id, authority_id),
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (authority_id) REFERENCES authorities (id)
 );
+DROP Table users_authorities;
 
 INSERT INTO users(id, email, password)
 values ('1122', 'email', 'password');
