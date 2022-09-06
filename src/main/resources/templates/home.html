@@ -30,14 +30,18 @@
         <div class="col card-deck ml-5 my-3" th:if="${!companies.isEmpty()}">
             <div class="card" th:each="company : ${companies}">
                 <div class="card-body">
-                    <h4 class="card-title" th:text="${company.getTitle()}"></h4>
-                    <p class="card-text" th:text="${company.getDescription()}"></p>
+                    <img src="logo_google.png">
+                    <h4 class="card-text" th:text="${company.getName()}"></h4>
+                    <p class="card-text" th:text="${company.getEmail()}"></p>
+                    <p class="card-text" th:text="${company.getWebsite()}"></p>
+                   <div>
+                       <a class="active" th:href="@{/company/{id}/eemployees/}" th:text="Employees" style="color: darkblue"></a>
+                   </div>
                 </div>
             </div>
         </div>
-
-
-
+    </div>
+</div>
 </body>
 <div th:replace="fragments/footer :: footer">
 </div>

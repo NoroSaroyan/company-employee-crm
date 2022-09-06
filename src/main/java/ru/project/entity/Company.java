@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class Company {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,9 +69,10 @@ public class Company {
         this.employees = employees;
     }
 
-    public Company( String name, String website, String email) {
+    public Company(String name, String website, String email) {
         this.name = name;
         this.website = website;
         this.email = email;
     }
+
 }

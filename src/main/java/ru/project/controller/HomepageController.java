@@ -28,7 +28,8 @@ public class HomepageController {
 
     @GetMapping(value = {"/", "/index", "/home"})
     public String homePage(Model model, Principal principal) {
-        model.addAttribute("companies", getAllCompanies(0,10));
+        List<Company> companyList = getAllCompanies(0,10);
+        model.addAttribute("companies", companyList);
 //        model.addAttribute("company", companyService.findById(1L));
         return "home";
     }
