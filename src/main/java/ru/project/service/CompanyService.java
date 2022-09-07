@@ -35,7 +35,6 @@ public class CompanyService {
             size = 10;
         }
         return companyRepository.findAll(PageRequest.of(page, size)).stream().toList();
-
     }
 
     public Optional<Company> findById(Long id) {

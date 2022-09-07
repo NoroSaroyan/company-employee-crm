@@ -4,6 +4,9 @@ body {
     display: flex;
     min-height: 90vh;
 }
+.card-header{
+    color: #0e456d;
+}
 .login {
     color: white;
     background: #136a8a;
