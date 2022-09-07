@@ -1,11 +1,14 @@
 package ru.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
+import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 
@@ -66,4 +69,29 @@ public class CompanyController {
         return "employee";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("company/add")
+    public ResponseEntity<Company> addCompany(@RequestBody Company company) {
+        companyService.save(company);
+        if (company.getEmployees() != null) {
+            employeeService.saveAll(company.getEmployees());
+        }
+        return ResponseEntity.ok(company);
+    }
+
+    @PatchMapping("/{companyId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Company> editCompany(@PathVariable String companyId, @RequestBody Company update) throws CompanyNotFoundException {
+        try {
+            Company got = companyService.findById(Long.parseLong(companyId.trim())).get();
+            got.setEmployees(update.getEmployees());
+            got.setWebsite(update.getWebsite());
+            got.setName(update.getName());
+            got.setEmail(update.getEmail());
+            companyService.update(got);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
