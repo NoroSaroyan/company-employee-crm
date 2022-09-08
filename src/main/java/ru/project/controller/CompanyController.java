@@ -1,5 +1,7 @@
 package ru.project.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +14,13 @@ import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
+
+    private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
     private final CompanyService companyService;
 
     private final EmployeeService employeeService;
@@ -48,25 +51,31 @@ public class CompanyController {
 
     @GetMapping("/{companyId}/employees/{employeeId}")
     public String getEmployee(Model model, @PathVariable String employeeId) {
-        model.addAttribute("employee", employeeService.findById(Long.parseLong(employeeId.trim())));
-        return "employees";
+        Employee emp;
+        Optional<Company> got = companyService.findById(Long.parseLong(employeeId.trim()));
+        if (got.isPresent()) {
+            for (Employee employee : got.get().getEmployees()) {
+                if (employee.getId().equals(Long.valueOf(employeeId.trim()))) {
+                    model.addAttribute("employee", employee);
+                    return "employees";
+                }
+            }
+        }
+        return "redirect:/{companyId}/employees";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{companyId}/employees/{employeeId}")
     public String deleteEmployee(Model model, @PathVariable String companyId, @PathVariable String employeeId) {
+        Optional<Company> company = companyService.findById(Long.valueOf(companyId.trim()));
         Optional<Employee> employee = employeeService.findById(Long.parseLong(employeeId.trim()));
-        Optional<Company> company = companyService.findById(Long.parseLong(companyId.trim()));
-        if (employee.isPresent() && company.isPresent()) {
-            company.get().getEmployees().removeIf(emp -> Objects.equals(emp.getId(), Long.valueOf(employeeId.trim())));
+        if (employee.isPresent()) {
+            company.ifPresent(company1 -> company1.getEmployees().remove(employee.get()));
+            employeeService.deleteById(Long.valueOf(employeeId.trim()));
             companyService.update(company.get());
-            employeeService.deleteById(Long.parseLong(employeeId.trim()));
-
-            model.addAttribute("company", companyService.findById(Long.valueOf(companyId.trim())));
-            return "company";
+            return "redirect:/{companyId}/employees";
         }
-        model.addAttribute("employee", employee);
-        return "employee";
+        return "redirect:/{companyId}/employees/";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -93,5 +102,15 @@ public class CompanyController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @DeleteMapping("/{companyId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String deleteCompany(@PathVariable String companyId) {
+        if (companyService.existsById(Long.valueOf(companyId.trim()))) {
+            companyService.deleteById(Long.valueOf(companyId.trim()));
+            return "redirect:/companies";
+        }
+        return "redirect:/error503";
     }
 }

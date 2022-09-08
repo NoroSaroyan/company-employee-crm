@@ -82,12 +82,12 @@ public class Employee {
         return email;
     }
 
-public Employee(String name, String surname, String phone_number, String email){
+    public Employee(String name, String surname, String phone_number, String email) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone_number = phone_number;
 
-}
+    }
 
 }
