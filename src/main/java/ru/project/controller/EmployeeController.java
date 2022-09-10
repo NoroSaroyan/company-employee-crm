@@ -24,7 +24,7 @@ public class EmployeeController {
         this.companyService = companyService;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public String getEmployees(Model model) {
         model.addAttribute("employees", employeeService.findAll(0, 10));
         return "employees";
@@ -36,7 +36,7 @@ public class EmployeeController {
         return "employees";
     }
 
-    @PostMapping("/employee/add")
+    @PostMapping("/employee")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
         employeeService.save(employee);
@@ -54,13 +54,7 @@ public class EmployeeController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Employee> editEmployee(@PathVariable String employeeId, @RequestBody Employee update) {
         try {
-            Employee got = employeeService.findById(Long.parseLong(employeeId.trim())).get();
-            got.setCompany(update.getCompany());
-            got.setName(update.getName());
-            got.setSurname(update.getSurname());
-            got.setEmail(update.getEmail());
-            got.setPhone_number(update.getPhone_number());
-            employeeService.update(got);
+            employeeService.update(update);
             return new ResponseEntity<>(HttpStatus.OK);
 
         } catch (Exception e) {

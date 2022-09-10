@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.project.entity.Company;
@@ -14,9 +15,11 @@ import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/companies")
 public class CompanyController {
 
@@ -32,59 +35,49 @@ public class CompanyController {
     }
 
     @GetMapping("/")
-    public String getAllCompanies(Model model, int size, int page) {
-        model.addAttribute("companies", companyService.findAll(size, page));
-        return "companies";
+    public String getAllCompanies(Model model) {
+        List<Company> companyList = companyService.findAll(0, 10);
+        model.addAttribute("companies", companyList);
+        return "home";
     }
 
+    //check for existence and long value
     @GetMapping("/{companyId}")
-    public String chooseCompany(Model model, @PathVariable String companyId) {
+    public String getCompany(Model model, @PathVariable String companyId) {
         model.addAttribute("company", companyService.findById(Long.parseLong(companyId.trim())));
         return "company";
     }
 
+
     @GetMapping("/{companyId}/employees")
     public String getEmployees(Model model, @PathVariable String companyId) {
-        model.addAttribute("employees", companyService.findById(Long.parseLong(companyId.trim())));
+        List<Employee> employees = employeeService.findAllByCompanyId(Long.parseLong(companyId.trim()), 0, 10);
+        model.addAttribute("employees", employees);
         return "employees";
     }
 
     @GetMapping("/{companyId}/employees/{employeeId}")
     public String getEmployee(Model model, @PathVariable String employeeId) {
-        Employee emp;
-        Optional<Company> got = companyService.findById(Long.parseLong(employeeId.trim()));
-        if (got.isPresent()) {
-            for (Employee employee : got.get().getEmployees()) {
-                if (employee.getId().equals(Long.valueOf(employeeId.trim()))) {
-                    model.addAttribute("employee", employee);
-                    return "employees";
-                }
-            }
+        Optional<Employee> employee = employeeService.findById(Long.valueOf(employeeId.trim()));
+        if (employee.isPresent()) {
+            model.addAttribute("employee", employee.get());
+            return "employees";
         }
-        return "redirect:/{companyId}/employees";
+        return "redirect:/404";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{companyId}/employees/{employeeId}")
     public String deleteEmployee(Model model, @PathVariable String companyId, @PathVariable String employeeId) {
-        Optional<Company> company = companyService.findById(Long.valueOf(companyId.trim()));
-        Optional<Employee> employee = employeeService.findById(Long.parseLong(employeeId.trim()));
-        if (employee.isPresent()) {
-            company.ifPresent(company1 -> company1.getEmployees().remove(employee.get()));
-            employeeService.deleteById(Long.valueOf(employeeId.trim()));
-            companyService.update(company.get());
-            return "redirect:/{companyId}/employees";
-        }
-        return "redirect:/{companyId}/employees/";
+        employeeService.deleteById(Long.valueOf(employeeId.trim()));
+        return "redirect:/{companyId}/employees";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PostMapping("company/add")
+    @PostMapping("/company")
     public ResponseEntity<Company> addCompany(@RequestBody Company company) {
+        company.setEmployees(Collections.emptyList());
         companyService.save(company);
-        if (company.getEmployees() != null) {
-            employeeService.saveAll(company.getEmployees());
-        }
         return ResponseEntity.ok(company);
     }
 
@@ -92,12 +85,7 @@ public class CompanyController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Company> editCompany(@PathVariable String companyId, @RequestBody Company update) throws CompanyNotFoundException {
         try {
-            Company got = companyService.findById(Long.parseLong(companyId.trim())).get();
-            got.setEmployees(update.getEmployees());
-            got.setWebsite(update.getWebsite());
-            got.setName(update.getName());
-            got.setEmail(update.getEmail());
-            companyService.update(got);
+            companyService.update(update);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,9 +95,11 @@ public class CompanyController {
     @DeleteMapping("/{companyId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deleteCompany(@PathVariable String companyId) {
-        if (companyService.existsById(Long.valueOf(companyId.trim()))) {
+        Optional<Company> company = companyService.findById(Long.valueOf(companyId.trim()));
+        boolean isEmpty = employeeService.findAllByCompanyId(Long.valueOf(companyId.trim()), 0, 1).isEmpty();
+        if (company.isPresent() && isEmpty) {
             companyService.deleteById(Long.valueOf(companyId.trim()));
-            return "redirect:/companies";
+            return "redirect:/all";
         }
         return "redirect:/error503";
     }

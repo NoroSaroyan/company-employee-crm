@@ -25,11 +25,32 @@ public class EmployeeService {
 
     }
 
+    public List<Employee> findAll(int page, int size, Long companyId) {
+
+        if (size > 10) {
+            size = 10;
+        }
+        return employeeRepository.findAll(PageRequest.of(page, size)).stream().toList();
+
+    }
+
+    public List<Employee> findAllByCompanyId(Long companyId, int page, int size) {
+        if (size > 10) {
+            size = 10;
+        }
+        return employeeRepository.findAllByCompanyId(companyId, PageRequest.of(page, size)).stream().toList();
+    }
+
+    public void delete(Long employeeId) {
+        employeeRepository.deleteById(employeeId);
+    }
+
+
     public void save(Employee employee) {
         employeeRepository.save(employee);
     }
 
-    public void saveAll(List<Employee> employees){
+    public void saveAll(List<Employee> employees) {
         employeeRepository.saveAll(employees);
     }
 
@@ -50,7 +71,7 @@ public class EmployeeService {
         return employeeRepository.existsById(id);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         employeeRepository.deleteById(id);
     }
 }

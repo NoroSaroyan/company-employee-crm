@@ -1,6 +1,7 @@
 package ru.project.repository;
 
 import lombok.NonNull;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.project.entity.Employee;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,6 +22,8 @@ public interface EmployeeRepository extends PagingAndSortingRepository<Employee,
     Optional<Employee> getEmployeesByCompany_Id(Long companyId);
 
     Optional<Employee> findByCompany_Id(Long companyId);
+
+    List<Employee> findAllByCompanyId(Long companyId, Pageable pageable);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("UPDATE Employee e set e.name=:name, e.surname=:surname,e.phone_number=:phone_number, e.email=:email where e.id =:employeeId")

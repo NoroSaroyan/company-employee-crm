@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <a style="color: #0dcaf0">companies html page</a>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col card-deck ml-5 my-3" th:if="${!companies.isEmpty()}">
+            <div class="card" th:each="company : ${companies}">
+                <div class="card-body">
+                    <img src="logo_google.png">
+                    <h4 class="card-text" th:text="${company.getName()}"></h4>
+                    <p class="card-text" th:text="${company.getEmail()}"></p>
+                    <p class="card-text" th:text="${company.getWebsite()}"></p>
+                    <div>
+                        <a class="active" th:href="@{'/companies/'+ ${company.getId()} + '/employees/'}" th:text="Employees" style="color: darkblue"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

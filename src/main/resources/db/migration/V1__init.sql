@@ -8,7 +8,7 @@ CREATE TABLE companies
 CREATE TABLE employees
 (
     id           BIGINT NOT NULL PRIMARY KEY,
-    companyId    BIGINT REFERENCES companies (id),
+    company_id    BIGINT REFERENCES companies(id),
     name         TEXT   NOT NULL,
     surname      TEXT   NOT NULL,
     phone_number TEXT   NOT NULL UNIQUE,

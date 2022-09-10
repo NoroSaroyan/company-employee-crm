@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="row">
+  <div class="col card-deck ml-5 my-3" th:if="${!company.isEmpty()}">
+    <div class="card">
+      <div class="card-body">
+        <img src="/images/logo_google.png">
+        <h3 class="card-text" th:text="${company.get().getName()}"></h3>
+        <p class="card-text" th:text="${company.get().getEmail()}"></p>
+        <p class="card-text" th:text="${company.get().getWebsite()}"></p>
+        <div>
+          <a class="active" th:href="@{'/companies/'+ ${company.get().getEmployees()} + '/employees/'}" th:text="Employees" style="color: darkblue"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
