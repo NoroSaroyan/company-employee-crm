@@ -26,9 +26,8 @@ public class Employee {
     @NotNull
     private String surname;
 
-    @ManyToOne
-    @JoinColumn(name = "companyId", nullable = false)
-//    @Column(name = "companyId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
     @NotNull
     private Company company;
 

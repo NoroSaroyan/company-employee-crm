@@ -6,7 +6,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Table(name = "companies")
@@ -30,8 +29,8 @@ public class Company {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Employee> employees;
+   // @OneToMany(fetch = FetchType.LAZY)
+//    private List<Employee> employees;
 
     public Long getId() {
         return id;
@@ -61,13 +60,13 @@ public class Company {
         this.email = email;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
-    }
+//    public List<Employee> getEmployees() {
+//        return employees;
+//    }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
+//    public void setEmployees(List<Employee> employees) {
+//        this.employees = employees;
+//    }
 
     public Company(String name, String website, String email) {
         this.name = name;
