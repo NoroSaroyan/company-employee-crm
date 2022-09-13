@@ -35,7 +35,6 @@ public class CompanyRepositoryIntegrationTest {
         companyService.save(testCompany);
     }
 
-
     @Test
     @DisplayName("check company in database")
     @Transactional

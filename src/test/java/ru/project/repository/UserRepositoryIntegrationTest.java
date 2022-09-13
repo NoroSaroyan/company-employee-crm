@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 import ru.project.CompanyEmployeeCrmApplication;
+import ru.project.entity.User;
 import ru.project.service.UserService;
 import ru.project.utils.UserUtils;
-import ru.project.entity.User;
 
 import java.util.Optional;
 
@@ -21,12 +21,10 @@ import java.util.Optional;
 public class UserRepositoryIntegrationTest {
 
     private final UserService service;
-    private final AuthorityRepository authorityRepository;
 
     @Autowired
-    public UserRepositoryIntegrationTest(@Qualifier("userService") UserService service, AuthorityRepository authorityRepository) {
+    public UserRepositoryIntegrationTest(@Qualifier("userService") UserService service) {
         this.service = service;
-        this.authorityRepository = authorityRepository;
     }
 
     @BeforeAll
@@ -42,7 +40,7 @@ public class UserRepositoryIntegrationTest {
 
         Assertions.assertTrue(got.isPresent(), "User must exist in database");
         Assertions.assertEquals(1L, got.get().getId(), "Ids not the same");
-        Assertions.assertEquals("email", got.get().getEmail(), "Emails not the same");
+        Assertions.assertEquals("admin@test.com", got.get().getEmail(), "Emails not the same");
         Assertions.assertEquals("pass", got.get().getPassword(), "passwords not the same");
 
         Assertions.assertEquals(1,got.get().getAuthorities().size(),"Authority list size ");

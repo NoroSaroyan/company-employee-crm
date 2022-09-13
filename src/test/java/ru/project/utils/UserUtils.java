@@ -8,8 +8,8 @@ public class UserUtils {
     public static User getTestUser(){
         User user = new User();
         user.setPassword("pass");
-        user.setEmail("email");
-        Authority authority = new Authority(1L, "ADMIN");
+        user.setEmail("admin@test.com");
+        Authority authority = new Authority( "ADMIN");
         user.setAuthorities(List.of(authority));
         return user;
     }

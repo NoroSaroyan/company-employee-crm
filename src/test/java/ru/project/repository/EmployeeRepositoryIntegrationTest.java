@@ -39,7 +39,6 @@ public class EmployeeRepositoryIntegrationTest {
 
     public void insertEmployee() {
         companyService.save(testCompany);
-
         testEmployee = EmployeeUtils.getTestEmployee();
         testEmployee.setCompany(companyService.findAll(0, 10).get(0));
         employeeService.save(testEmployee);
