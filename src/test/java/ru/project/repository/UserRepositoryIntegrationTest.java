@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import ru.project.CompanyEmployeeCrmApplication;
 import ru.project.entity.User;
 import ru.project.service.UserService;
@@ -18,6 +19,8 @@ import java.util.Optional;
 @DataJpaTest
 @ContextConfiguration(classes = {UserService.class, CompanyEmployeeCrmApplication.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestPropertySource(value = "classpath:application-test.properties")
+
 public class UserRepositoryIntegrationTest {
 
     private final UserService service;
