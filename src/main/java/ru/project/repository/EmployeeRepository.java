@@ -23,6 +23,7 @@ public interface EmployeeRepository extends PagingAndSortingRepository<Employee,
 
     Optional<Employee> findByCompany_Id(Long companyId);
 
+
     List<Employee> findAllByCompanyId(Long companyId, Pageable pageable);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)

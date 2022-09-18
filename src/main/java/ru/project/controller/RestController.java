@@ -29,14 +29,17 @@ public class RestController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("companies/{companyId}")
+    @GetMapping("/companies/{companyId}")
     public @ResponseBody ResponseEntity<Company> getCompany(@PathVariable Long companyId) {
         Optional<Company> company = companyService.findById(companyId);
         return ResponseEntity.of(company);
     }
 
     @GetMapping("/companies")
-    public @ResponseBody ResponseEntity<List<Company>> getAllCompanies() {
+    public @ResponseBody ResponseEntity<List<Company>> getAllCompanies(
+            @RequestParam(value = "page", required = false, defaultValue = "0") int pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+
         List<Company> companyList = companyService.findAll(0, 10);
         return ResponseEntity.ok(companyList);
     }
@@ -92,7 +95,6 @@ public class RestController {
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
     @GetMapping("/employees")
     public @ResponseBody ResponseEntity<List<Employee>> getEmployees() {
