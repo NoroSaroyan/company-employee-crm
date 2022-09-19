@@ -28,14 +28,12 @@ public class RestController {
         this.employeeService = employeeService;
     }
 
-    //works
     @GetMapping("/companies/{companyId}")
     public @ResponseBody ResponseEntity<Company> getCompany(@PathVariable Long companyId) {
         Optional<Company> company = companyService.findById(companyId);
         return ResponseEntity.of(company);
     }
 
-    //works
     @GetMapping("/companies")
     public @ResponseBody ResponseEntity<List<Company>> getAllCompanies(
             @RequestParam(value = "page", required = false, defaultValue = "0") int pageNumber,
@@ -45,7 +43,6 @@ public class RestController {
         return ResponseEntity.ok(companyList);
     }
 
-    //works
     @GetMapping("/companies/{companyId}/employees")
     public @ResponseBody ResponseEntity<List<Employee>> getEmployees(
             @PathVariable Long companyId, @RequestParam(value = "page", required = false, defaultValue = "0") int pageNumber,
@@ -60,7 +57,7 @@ public class RestController {
         return ResponseEntity.of(employee);
     }
 
-    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/companies/{companyId}/employees/{employeeId}")
     public @ResponseBody ResponseEntity<Long> deleteEmployee(@PathVariable Long employeeId) {
         employeeService.deleteById(employeeId);
@@ -70,7 +67,8 @@ public class RestController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/companies/company")
     public @ResponseBody ResponseEntity<Company> addCompany(@RequestBody Company company) {
         companyService.save(company);
@@ -78,7 +76,7 @@ public class RestController {
     }
 
     @PatchMapping("/companies/{companyId}")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public @ResponseBody ResponseEntity<Company> editCompany(@PathVariable Long companyId, @RequestBody Company update) throws CompanyNotFoundException {
         try {
             companyService.update(update);
@@ -89,7 +87,7 @@ public class RestController {
     }
 
     @DeleteMapping("/companies/{companyId}")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public @ResponseBody ResponseEntity<Long> deleteCompany(@PathVariable Long companyId) {
         Optional<Company> company = companyService.findById(companyId);
         boolean isEmpty = employeeService.findAllByCompanyId(companyId, 0, 1).isEmpty();
@@ -118,7 +116,7 @@ public class RestController {
     }
 
     @DeleteMapping("/employees/{employeeId}")
-    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public @ResponseBody ResponseEntity<Long> deleteEmployeeFromEmployees(@PathVariable Long employeeId) {
         employeeService.deleteById(employeeId);
         if (!employeeService.existsById(employeeId)) {
@@ -128,7 +126,7 @@ public class RestController {
     }
 
     @PatchMapping("/employees/{employeeId}")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Employee> editEmployee(@PathVariable String employeeId, @RequestBody Employee update) {
         try {
             employeeService.update(update);
