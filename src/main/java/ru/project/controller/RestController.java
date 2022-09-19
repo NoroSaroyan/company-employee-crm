@@ -39,7 +39,7 @@ public class RestController {
             @RequestParam(value = "page", required = false, defaultValue = "0") int pageNumber,
             @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
-        List<Company> companyList = companyService.findAll(pageNumber, 5);
+        List<Company> companyList = companyService.findAll(pageNumber, size);
         return ResponseEntity.ok(companyList);
     }
 
