@@ -23,6 +23,7 @@ import ru.project.utils.EmployeeUtils;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -111,14 +112,14 @@ public class RestControllerTest {
     }
 
 
-//    @Test
-//    @DisplayName("delete company ok")
-//    public void testOkDeleteCompanyById() throws Exception {
-//        Mockito.when(companyService.existsById(1L)).thenReturn(false);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.delete("/api/companies/{companyId}",1L))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    @DisplayName("delete company ok")
+    public void testOkDeleteCompanyById() throws Exception {
+        mockMvc.perform(delete("/api/companies/2"))
+                .andExpect(status().isOk());
+
+        Mockito.verify(companyService, Mockito.times(1)).deleteById(2L);
+    }
 
     @Test
     @DisplayName("get employee by id")
@@ -136,12 +137,10 @@ public class RestControllerTest {
     @DisplayName("get all employees")
     public void testOkFindAllEmployees() throws Exception {
         List<Employee> employees = EmployeeUtils.getTestEmployeeList();
-        Mockito.when(employeeService.findAll(0,10)).thenReturn(employees);
+        Mockito.when(employeeService.findAll(0, 10)).thenReturn(employees);
 
         this.mockMvc.perform(get("/api/employees")).andExpect(status().isOk());
     }
-
-
 
 
     @Test
@@ -150,7 +149,7 @@ public class RestControllerTest {
     public void testUpdateEmployee() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/api/employees/{employeeId}", 22L)
-                        .content(asJsonString(new Employee("firstname","lastname", "8999998787", "test@mail.com")))
+                        .content(asJsonString(new Employee("firstname", "lastname", "8999998787", "test@mail.com")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -170,6 +169,14 @@ public class RestControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @DisplayName("delete employee ok")
+    public void testOkDeleteEmployyeeById() throws Exception {
+        mockMvc.perform(delete("/api/employees/2"))
+                .andExpect(status().isOk());
+
+        Mockito.verify(employeeService, Mockito.times(1)).deleteById(2L);
+    }
 
     public static String asJsonString(final Object obj) {
         try {

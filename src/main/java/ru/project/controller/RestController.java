@@ -89,13 +89,8 @@ public class RestController {
     @DeleteMapping("/companies/{companyId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public @ResponseBody ResponseEntity<Long> deleteCompany(@PathVariable Long companyId) {
-        Optional<Company> company = companyService.findById(companyId);
-        boolean isEmpty = employeeService.findAllByCompanyId(companyId, 0, 1).isEmpty();
-        if (company.isPresent() && isEmpty) {
-            companyService.deleteById(companyId);
-            return ResponseEntity.ok(companyId);
-        }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        companyService.deleteById(companyId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/employees")
