@@ -23,7 +23,6 @@ import ru.project.utils.EmployeeUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -89,18 +88,6 @@ public class RestControllerTest {
     }
 
     @Test
-    @DisplayName("internal server error delete company's employee by id")
-    public void testErrorDeleteCompanyById() throws Exception {
-        Employee employee = EmployeeUtils.getTestEmployee();
-        Company testCompany = CompanyUtils.getTestCompany();
-
-        employee.setCompany(testCompany);
-        Mockito.when((employeeService.deleteByIdBool(1L))).thenReturn(false);
-
-        this.mockMvc.perform(delete("/api/companies/1/")).andExpect(status().is5xxServerError());
-    }
-
-    @Test
     @DisplayName("add company")
     public void testOkAddCompany() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
@@ -155,19 +142,7 @@ public class RestControllerTest {
     }
 
 
-    @Test
-    @DisplayName("internal server error delete company's employee by id")
-    public void testErrorDeleteEmployeeById() throws Exception {
-        Employee employee = EmployeeUtils.getTestEmployee();
-        Company testCompany = CompanyUtils.getTestCompany();
-        System.out.println(testCompany);
-        System.out.println(employee);
 
-        employee.setCompany(testCompany);
-        Mockito.when((employeeService.deleteByIdBool(1L))).thenReturn(false);
-
-        this.mockMvc.perform(delete("/api/companies/1/")).andExpect(status().is5xxServerError());
-    }
 
     @Test
     @DisplayName("update employee")
@@ -194,13 +169,7 @@ public class RestControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-//    @Test
-//    @DisplayName("delete employee ok")
-//    public void testOkDeleteEmployeeById() throws Exception {
-//        Mockito.when(employeeService.existsById(1L)).thenReturn(false);
-//        mockMvc.perform(MockMvcRequestBuilders.delete("/api/employees/{employeeId}", 1L))
-//                .andExpect(status().isOk());
-//    }
+
 
     public static String asJsonString(final Object obj) {
         try {

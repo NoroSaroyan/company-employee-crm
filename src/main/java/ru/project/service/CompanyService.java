@@ -33,7 +33,7 @@ public class CompanyService {
         if (size > 10) {
             size = 10;
         }
-            return companyRepository.findAll(PageRequest.of(page, size)).stream().toList();
+        return companyRepository.findAll(PageRequest.of(page, size)).stream().toList();
     }
 
 

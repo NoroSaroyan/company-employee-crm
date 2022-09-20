@@ -28,14 +28,12 @@ public class RestController {
         this.employeeService = employeeService;
     }
 
-    //done
     @GetMapping("/companies/{companyId}")
     public @ResponseBody ResponseEntity<Company> getCompany(@PathVariable Long companyId) {
         Optional<Company> company = companyService.findById(companyId);
         return ResponseEntity.of(company);
     }
 
-    //done
     @GetMapping("/companies")
     public @ResponseBody ResponseEntity<List<Company>> getAllCompanies(
             @RequestParam(value = "page", required = false, defaultValue = "0") int pageNumber,
@@ -45,7 +43,6 @@ public class RestController {
         return ResponseEntity.ok(companyList);
     }
 
-    //done
     @GetMapping("/companies/{companyId}/employees")
     public @ResponseBody ResponseEntity<List<Employee>> getEmployees(
             @PathVariable Long companyId, @RequestParam(value = "page", required = false, defaultValue = "0") int pageNumber,
@@ -54,14 +51,12 @@ public class RestController {
         return ResponseEntity.ok(employees);
     }
 
-    //done
     @GetMapping("/companies/{companyId}/employees/{employeeId}")
     public @ResponseBody ResponseEntity<Employee> getEmployee(@PathVariable Long companyId, @PathVariable Long employeeId) {
         Optional<Employee> employee = employeeService.findById(employeeId);
         return ResponseEntity.of(employee);
     }
 
-    //done
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/companies/{companyId}/employees/{employeeId}")
     public @ResponseBody ResponseEntity<Long> deleteEmployee(@PathVariable Long employeeId) {
@@ -73,7 +68,6 @@ public class RestController {
     }
 
 
-    //done
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/companies/company")
     public @ResponseBody ResponseEntity<Company> addCompany(@RequestBody Company company) {
