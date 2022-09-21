@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
-import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 
@@ -51,23 +50,6 @@ public class RestController {
         return ResponseEntity.ok(employees);
     }
 
-    @GetMapping("/companies/{companyId}/employees/{employeeId}")
-    public @ResponseBody ResponseEntity<Employee> getEmployee(@PathVariable Long companyId, @PathVariable Long employeeId) {
-        Optional<Employee> employee = employeeService.findById(employeeId);
-        return ResponseEntity.of(employee);
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("/companies/{companyId}/employees/{employeeId}")
-    public @ResponseBody ResponseEntity<Long> deleteEmployee(@PathVariable Long employeeId) {
-        employeeService.deleteById(employeeId);
-        if (employeeService.existsById(employeeId)) {
-            return ResponseEntity.ok(employeeId);
-        }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/companies/company")
     public @ResponseBody ResponseEntity<Company> addCompany(@RequestBody Company company) {
@@ -75,9 +57,18 @@ public class RestController {
         return ResponseEntity.ok(company);
     }
 
+    @DeleteMapping("/companies/{companyId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public @ResponseBody ResponseEntity<Long> deleteCompany(@PathVariable Long companyId) {
+        if (companyService.deleteById(companyId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @PatchMapping("/companies/{companyId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public @ResponseBody ResponseEntity<Company> editCompany(@PathVariable Long companyId, @RequestBody Company update) throws CompanyNotFoundException {
+    public @ResponseBody ResponseEntity<Company> editCompany(@PathVariable Long companyId, @RequestBody Company update) {
         try {
             companyService.update(update);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -86,43 +77,34 @@ public class RestController {
         }
     }
 
-    @DeleteMapping("/companies/{companyId}")
+    @GetMapping("/companies/{companyId}/employees/{employeeId}")
+    public @ResponseBody ResponseEntity<Employee> getEmployee(@PathVariable Long companyId, @PathVariable Long employeeId) {
+        Optional<Employee> employee = employeeService.findById(employeeId);
+        return ResponseEntity.of(employee);
+    }
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public @ResponseBody ResponseEntity<Long> deleteCompany(@PathVariable Long companyId) {
-        companyService.deleteById(companyId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/employees")
-    public @ResponseBody ResponseEntity<List<Employee>> getEmployees() {
-        return ResponseEntity.ok(employeeService.findAll(0, 10));
-    }
-
-    @GetMapping("/employees/{employeeId}")
-    public @ResponseBody ResponseEntity<Employee> getEmployee(@PathVariable Long employeeId) {
-        return ResponseEntity.of(employeeService.findById(employeeId));
-    }
-
-    @PostMapping("/employees/employee")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public @ResponseBody ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-        employeeService.save(employee);
-        return ResponseEntity.ok(employee);
-    }
-
-    @DeleteMapping("/employees/{employeeId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public @ResponseBody ResponseEntity<Long> deleteEmployeeFromEmployees(@PathVariable Long employeeId) {
+    @DeleteMapping("/companies/{companyId}/employees/{employeeId}")
+    public @ResponseBody ResponseEntity<Long> deleteEmployee(@PathVariable Long employeeId, @PathVariable String companyId) {
         employeeService.deleteById(employeeId);
-        if (!employeeService.existsById(employeeId)) {
+        if (employeeService.existsById(employeeId)) {
             return ResponseEntity.ok(employeeId);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PatchMapping("/employees/{employeeId}")
+    @PostMapping("/companies/{companyId}/employees/employee")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Employee> editEmployee(@PathVariable String employeeId, @RequestBody Employee update) {
+    public @ResponseBody ResponseEntity<Employee> addEmployee(@RequestBody Employee employee, @PathVariable Long companyId) {
+        Optional<Company> optionalCompany = companyService.findById(companyId);
+        optionalCompany.ifPresent(employee::setCompany);
+        employeeService.save(employee);
+        return ResponseEntity.ok(employee);
+    }
+
+    @PatchMapping("/companies/{companyId}/employees/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Employee> editEmployee(@PathVariable Long employeeId, @RequestBody Employee update, @PathVariable Long companyId) {
         try {
             employeeService.update(update);
             return new ResponseEntity<>(HttpStatus.OK);
