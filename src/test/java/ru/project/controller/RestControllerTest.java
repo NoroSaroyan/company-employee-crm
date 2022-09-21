@@ -1,6 +1,7 @@
 package ru.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.project.entity.Company;
@@ -91,12 +93,17 @@ public class RestControllerTest {
     @Test
     @DisplayName("add company")
     public void testOkAddCompany() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
+        Company company = new Company(null, "firstName4", "lastName4", "email4@mail.com");
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/companies/company")
-                        .content(asJsonString(new Company(null, "firstName4", "lastName4", "email4@mail.com")))
+                        .content(asJsonString(company))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String content = result.getResponse().getContentAsString();
+        Assertions.assertEquals(content, asJsonString(company));
     }
 
     @Test
@@ -172,7 +179,7 @@ public class RestControllerTest {
     @Test
     @DisplayName("delete employee ok")
     public void testOkDeleteEmployeeById() throws Exception {
-        mockMvc.perform(delete("/api/companies/2/employees/{employeeId}",2L))
+        mockMvc.perform(delete("/api/companies/2/employees/{employeeId}", 2L))
                 .andExpect(status().isOk());
 
         Mockito.verify(employeeService, Mockito.times(1)).deleteById(2L);
