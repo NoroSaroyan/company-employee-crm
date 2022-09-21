@@ -115,10 +115,10 @@ public class RestControllerTest {
     @Test
     @DisplayName("delete company ok")
     public void testOkDeleteCompanyById() throws Exception {
-        mockMvc.perform(delete("/api/companies/2"))
+        mockMvc.perform(delete("/api/companies/{companyId}", 1L))
                 .andExpect(status().isOk());
 
-        Mockito.verify(companyService, Mockito.times(1)).deleteById(2L);
+        Mockito.verify(companyService, Mockito.times(1)).deleteById(1L);
     }
 
     @Test
@@ -128,7 +128,7 @@ public class RestControllerTest {
         Mockito.when(employeeService.findById(1L))
                 .thenReturn(Optional.of(employee));
 
-        this.mockMvc.perform(get("/api/employees/1")
+        this.mockMvc.perform(get("/api/companies/1/employees/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -139,7 +139,7 @@ public class RestControllerTest {
         List<Employee> employees = EmployeeUtils.getTestEmployeeList();
         Mockito.when(employeeService.findAll(0, 10)).thenReturn(employees);
 
-        this.mockMvc.perform(get("/api/employees")).andExpect(status().isOk());
+        this.mockMvc.perform(get("/api/companies/1/employees")).andExpect(status().isOk());
     }
 
 
@@ -148,7 +148,7 @@ public class RestControllerTest {
     @WithMockUser
     public void testUpdateEmployee() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/api/employees/{employeeId}", 22L)
+                        .patch("/api/companies/1/employees/{employeeId}", 2L)
                         .content(asJsonString(new Employee("firstname", "lastname", "8999998787", "test@mail.com")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -162,7 +162,7 @@ public class RestControllerTest {
         Employee employee = EmployeeUtils.getTestEmployee();
         employee.setCompany(CompanyUtils.getTestCompany());
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/employees/employee")
+                        .post("/api/companies/1/employees/employee")
                         .content(asJsonString(employee))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -171,8 +171,8 @@ public class RestControllerTest {
 
     @Test
     @DisplayName("delete employee ok")
-    public void testOkDeleteEmployyeeById() throws Exception {
-        mockMvc.perform(delete("/api/employees/2"))
+    public void testOkDeleteEmployeeById() throws Exception {
+        mockMvc.perform(delete("/api/companies/2/employees/{employeeId}",2L))
                 .andExpect(status().isOk());
 
         Mockito.verify(employeeService, Mockito.times(1)).deleteById(2L);

@@ -60,10 +60,12 @@ public class RestController {
     @DeleteMapping("/companies/{companyId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public @ResponseBody ResponseEntity<Long> deleteCompany(@PathVariable Long companyId) {
-        if (companyService.deleteById(companyId)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            companyService.deleteById(companyId);
+            return ResponseEntity.ok(companyId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PatchMapping("/companies/{companyId}")
@@ -83,14 +85,16 @@ public class RestController {
         return ResponseEntity.of(employee);
     }
 
+    ///companies/{companyId}
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("/companies/{companyId}/employees/{employeeId}")
-    public @ResponseBody ResponseEntity<Long> deleteEmployee(@PathVariable Long employeeId, @PathVariable String companyId) {
-        employeeService.deleteById(employeeId);
-        if (employeeService.existsById(employeeId)) {
+    @DeleteMapping("companies/{companyId}/employees/{employeeId}")
+    public @ResponseBody ResponseEntity<Long> deleteEmployee(@PathVariable Long employeeId, @PathVariable Long companyId) {
+        try {
+            employeeService.deleteById(employeeId);
             return ResponseEntity.ok(employeeId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/companies/{companyId}/employees/employee")
