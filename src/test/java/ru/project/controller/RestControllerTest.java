@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(RestController.class)
 public class RestControllerTest {
+
     @Autowired
     private RestController restController;
 
@@ -118,7 +119,6 @@ public class RestControllerTest {
                 .andExpect(status().isOk());
     }
 
-
     @Test
     @DisplayName("delete company ok")
     public void testOkDeleteCompanyById() throws Exception {
@@ -148,7 +148,6 @@ public class RestControllerTest {
 
         this.mockMvc.perform(get("/api/companies/1/employees")).andExpect(status().isOk());
     }
-
 
     @Test
     @DisplayName("update employee")
