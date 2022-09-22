@@ -1,18 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <a style="color: #0dcaf0">companies html page</a>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/css/login.css"/>
+    <title>
+        Company Employee CRM Log in Form
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
+    <link href="css/nucleo-icons.css" rel="stylesheet"/>
+    <link href="css/nucleo-svg.css" rel="stylesheet"/>
+    <link ref="stylesheet" href="/css/cards.css">
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link id="pagestyle" href="css/material-kit.css?v=3.0.2" rel="stylesheet"/>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <div class="container">
     <div class="row">
-        <div class="col card-deck ml-5 my-3" th:if="${!companies.isEmpty()}">
+        <div class="col card-deck ml-5 my-3" style="color: gray" th:if="${!companies.isEmpty()}">
             <div class="card" th:each="company : ${companies}">
                 <div class="card-body">
-                    <img src="logo_google.png">
-                    <h4 class="card-text" th:text="${company.getName()}"></h4>
+                    <a th:href="@{'/companies/'+ ${company.getId()} + '/'}">
+                        <img src="/images/logo_google.png" >
+                    </a>
+                    <h4 class="card-text" th:text="${company.getName() }"></h4>
                     <p class="card-text" th:text="${company.getEmail()}"></p>
                     <p class="card-text" th:text="${company.getWebsite()}"></p>
                     <div>
@@ -24,4 +38,6 @@
     </div>
 </div>
 </body>
+<div th:replace="fragments/footer :: footer">
+</div>
 </html>

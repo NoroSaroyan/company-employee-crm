@@ -10,9 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        //  "/css/**"
-        web.ignoring().antMatchers( "/js/**");
+    public void configure(WebSecurity web){
+        web.ignoring().antMatchers( "/js/**","/css/**");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -22,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login.html").loginProcessingUrl("/login")
-                .defaultSuccessUrl("/admin", true)
+                .defaultSuccessUrl("/home", true)
                 .failureUrl("/login")
                 .usernameParameter("login").passwordParameter("entry")
                 .permitAll()
