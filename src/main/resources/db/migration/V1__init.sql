@@ -1,14 +1,14 @@
 CREATE TABLE companies
 (
-    id      BIGINT NOT NULL PRIMARY KEY,
+    id      BIGSERIAL NOT NULL PRIMARY KEY,
     name    TEXT   NOT NULL UNIQUE,
     email   TEXT   UNIQUE ,
     website TEXT
 );
 CREATE TABLE employees
 (
-    id           BIGINT NOT NULL PRIMARY KEY,
-    companyId    BIGINT REFERENCES companies (id),
+    id           BIGSERIAL NOT NULL PRIMARY KEY,
+    company_id    BIGINT REFERENCES companies(id),
     name         TEXT   NOT NULL,
     surname      TEXT   NOT NULL,
     phone_number TEXT   NOT NULL UNIQUE,
@@ -16,14 +16,14 @@ CREATE TABLE employees
 );
 create table users
 (
-    id       BIGINT NOT NULL PRIMARY KEY,
+    id       BIGSERIAL NOT NULL PRIMARY KEY,
     email    TEXT   NOT NULL,
     password TEXT   NOT NULL
 );
 
 CREATE TABLE authorities
 (
-    id   BIGINT UNIQUE PRIMARY KEY,
+    id   BIGSERIAL UNIQUE PRIMARY KEY,
     name TEXT UNIQUE NOT NULL
 );
 

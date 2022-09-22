@@ -25,17 +25,18 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public void deleteById(Long id) {
+    public boolean deleteById(Long id) {
         companyRepository.deleteById(id);
+        return companyRepository.existsById(id);
     }
 
     public List<Company> findAll(int page, int size) {
-
         if (size > 10) {
             size = 10;
         }
         return companyRepository.findAll(PageRequest.of(page, size)).stream().toList();
     }
+
 
     public Optional<Company> findById(Long id) {
         return companyRepository.findById(id);
