@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyUtils {
-    private static Long aLong = 1L;
     public static Company getTestCompany() {
         return new Company("testCompany","testCompany.com","company@test.com");
     }

@@ -10,14 +10,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.project.entity.Authority;
 import ru.project.entity.User;
+
 import java.util.List;
 import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
 
 @DisplayName("verify UserDetailsService")
 @ExtendWith(MockitoExtension.class)
+//@ActiveProfiles("test")
 class UserDetailsServiceImplTest {
     @Mock private UserService userService;
 

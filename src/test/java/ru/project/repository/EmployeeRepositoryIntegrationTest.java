@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import ru.project.CompanyEmployeeCrmApplication;
 import ru.project.entity.Company;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @DataJpaTest
 @ContextConfiguration(classes = {EmployeeService.class, CompanyService.class, CompanyEmployeeCrmApplication.class})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestPropertySource(value = "classpath:application-test.properties")
 public class EmployeeRepositoryIntegrationTest {
 
     private final EmployeeService employeeService;
@@ -39,7 +41,6 @@ public class EmployeeRepositoryIntegrationTest {
 
     public void insertEmployee() {
         companyService.save(testCompany);
-
         testEmployee = EmployeeUtils.getTestEmployee();
         testEmployee.setCompany(companyService.findAll(0, 10).get(0));
         employeeService.save(testEmployee);

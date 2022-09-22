@@ -26,9 +26,8 @@ public class Employee {
     @NotNull
     private String surname;
 
-    @ManyToOne
-    @JoinColumn(name = "companyId", nullable = false)
-//    @Column(name = "companyId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
     @NotNull
     private Company company;
 
@@ -82,12 +81,12 @@ public class Employee {
         return email;
     }
 
-public Employee(String name, String surname, String phone_number, String email){
+    public Employee(String name, String surname, String phone_number, String email) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone_number = phone_number;
 
-}
+    }
 
 }

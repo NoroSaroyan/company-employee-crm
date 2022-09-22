@@ -13,7 +13,6 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-
 public class HomepageController {
 
     private final EmployeeService employeeService;
