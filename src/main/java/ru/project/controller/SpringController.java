@@ -67,7 +67,7 @@ public class SpringController {
         return "redirect:/{companyId}/employees";
     }
 
-    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("company/add")
     public String addCompany(Model model) {
         Company company = new Company();
@@ -75,7 +75,7 @@ public class SpringController {
         return "add_company";
     }
 
-    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("company/post")
     public String addCompany(@ModelAttribute("company") Company company) {
         companyService.save(company);
@@ -83,8 +83,18 @@ public class SpringController {
         return path;
     }
 
-    @PatchMapping("companies/{companyId}")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("companies/{companyId}/edit")
+    public String editCompany(Model model, @PathVariable Long companyId) {
+        Optional<Company> company = companyService.findById(companyId);
+        if(company.isPresent()) {
+            model.addAttribute("company", company.get());
+            return "edit_company";
+        }
+        return "redirect:error/503";
+    }
+
+    @PatchMapping("companies/{companyId}/patch")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editCompany(@PathVariable Long companyId, @RequestBody Company update) throws CompanyNotFoundException {
         try {
             companyService.update(update);
@@ -107,14 +117,14 @@ public class SpringController {
     }
 
     @PostMapping("employee/add")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
         employeeService.save(employee);
         return ResponseEntity.ok(employee);
     }
 
     @PatchMapping("companies/{companyId}/employees/{employeeId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editEmployee(@PathVariable Long employeeId, @RequestBody Employee update, @PathVariable Long companyId) {
         try {
             employeeService.update(update);
