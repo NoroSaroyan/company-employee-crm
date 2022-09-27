@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 public class Employee {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

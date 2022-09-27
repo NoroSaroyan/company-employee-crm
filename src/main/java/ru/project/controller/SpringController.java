@@ -67,15 +67,24 @@ public class SpringController {
         return "redirect:/{companyId}/employees";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PostMapping("companies/company")
-    public String addCompany(@RequestBody Company company) {
+    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("company/add")
+    public String addCompany(Model model) {
+        Company company = new Company();
+        model.addAttribute("company", company);
+        return "add_company";
+    }
+
+    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("company/post")
+    public String addCompany(@ModelAttribute("company") Company company) {
         companyService.save(company);
-        return "redirect:/companies/" + company.getId().toString();
+        String path = "redirect:/companies/" + company.getId().toString();
+        return path;
     }
 
     @PatchMapping("companies/{companyId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editCompany(@PathVariable Long companyId, @RequestBody Company update) throws CompanyNotFoundException {
         try {
             companyService.update(update);
@@ -85,14 +94,14 @@ public class SpringController {
         }
     }
 
-    @DeleteMapping("companies/{companyId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String deleteCompany(@PathVariable String companyId) {
-        Optional<Company> company = companyService.findById(Long.valueOf(companyId.trim()));
-        boolean isEmpty = employeeService.findAllByCompanyId(Long.valueOf(companyId.trim()), 0, 1).isEmpty();
+    @GetMapping("companies/{companyId}/delete")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String deleteCompany(@PathVariable Long companyId) {
+        Optional<Company> company = companyService.findById(companyId);
+        boolean isEmpty = employeeService.findAllByCompanyId(companyId, 0, 1).isEmpty();
         if (company.isPresent() && isEmpty) {
-            companyService.deleteById(Long.valueOf(companyId.trim()));
-            return "redirect:/all";
+            companyService.deleteById(companyId);
+            return "redirect:/companies";
         }
         return "error/503";
     }

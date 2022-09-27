@@ -1,7 +1,6 @@
 package ru.project.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "companies")
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString
 public class Company {
 
@@ -61,6 +59,10 @@ public class Company {
         this.name = name;
         this.website = website;
         this.email = email;
+    }
+
+    public Company() {
+
     }
 
 }

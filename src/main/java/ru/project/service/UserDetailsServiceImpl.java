@@ -26,14 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("---------------");
-        System.out.println(email);
-        System.out.println("---------------");
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-
         Optional<User> mayBeUser = userRepository.findByEmail(email);
-
         if (mayBeUser.isEmpty()) {
             throw new UsernameNotFoundException("No user found for " + email);
         }

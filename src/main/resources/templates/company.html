@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +23,7 @@
         <div class="card">
             <div class="card-body">
                 <img src="/images/logo_google.png">
-                <h3 class="card-text" th:text="${company.get().getName()}"></h3>
+                <h3 class="card-text" th:text="${company.get().getName()} "></h3>
                 <p class="card-text" th:text="${company.get().getEmail()}"></p>
                 <p class="card-text" th:text="${company.get().getWebsite()}"></p>
                 <div>
@@ -32,9 +32,10 @@
                 </div>
             </div>
         </div>
-        <div class="submit-btn" sec:authorize="(hasAuthority('ROLE_ADMIN'))">Add</div>
-        <div class="btn-github" sec:authorize="(hasAuthority('ROLE_ADMIN'))">Edit</div>
-        <div class="btn-danger" sec:authorize="(hasAuthority('ROLE_ADMIN'))">Delete</div>
+        <a class="submit-btn" href="http://localhost:8089/company/add">Add</a>
+        <a class="active" th:with="companyId=${companyId}"
+           th:href="@{'http://localhost:8089/companies/'+${company.get().getId()}}">Edit</a>
+        <a class="btn-danger" th:href="@{'/companies/'+${company.get().getId()}+'/delete'}">Delete</a>
     </div>
 </div>
 </body>
