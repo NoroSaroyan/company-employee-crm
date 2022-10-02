@@ -2,6 +2,7 @@ package ru.project.service;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.project.entity.Company;
 import ru.project.repository.CompanyRepository;
 import ru.project.repository.EmployeeRepository;
@@ -9,7 +10,8 @@ import ru.project.repository.EmployeeRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service()
+@Service
+@Transactional
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
@@ -36,10 +38,15 @@ public class CompanyService {
         return companyRepository.findAll(PageRequest.of(page, size)).stream().toList();
     }
 
+    public List<Company> findAll() {
+        return companyRepository.findAll();
+    }
+
 
     public Optional<Company> findById(Long id) {
         return companyRepository.findById(id);
     }
+
 
     public void update(Company company) {
         companyRepository.update(

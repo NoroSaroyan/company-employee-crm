@@ -35,12 +35,6 @@ public class HomepageController {
 
     @RequestMapping("/login")
     public String login() {
-        System.out.println("--------");
-        System.out.println(passwordEncoder.encode("1234test"));
-        System.out.println("--------");
-//        $2a$10$IHAND/u./SYfxaMGpBWTUu.SgwElfa/7fYhsPO2XErzqxZFzjTzLK
         return "login";
     }
-
-
 }

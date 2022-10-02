@@ -1,14 +1,12 @@
 package ru.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
-import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 
@@ -79,27 +77,27 @@ public class SpringController {
     @PostMapping("company/post")
     public String addCompany(@ModelAttribute("company") Company company) {
         companyService.save(company);
-        String path = "redirect:/companies/" + company.getId().toString();
-        return path;
+        return "redirect:/companies/" + company.getId().toString();
     }
 
     @GetMapping("companies/{companyId}/edit")
     public String editCompany(Model model, @PathVariable Long companyId) {
-        Optional<Company> company = companyService.findById(companyId);
-        if(company.isPresent()) {
-            model.addAttribute("company", company.get());
-            return "edit_company";
-        }
-        return "redirect:error/503";
+        Company company = companyService.findById(companyId).orElseThrow(IllegalArgumentException::new);
+
+        model.addAttribute("company", company);
+
+        return "edit_company";
     }
 
-    @PatchMapping("companies/{companyId}/patch")
+    @PostMapping(value = "companies/{companyId}/update")
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String editCompany(@PathVariable Long companyId, @RequestBody Company update) throws CompanyNotFoundException {
+    public String editCompany(@PathVariable Long companyId, @ModelAttribute("company") Company update) {
+
         try {
             companyService.update(update);
             return "redirect:/companies/" + companyId.toString();
         } catch (Exception e) {
+            e.printStackTrace();
             return "error/404";
         }
     }
@@ -116,11 +114,23 @@ public class SpringController {
         return "error/503";
     }
 
+    @GetMapping("employee/add")
+    public String addEmployee(Model model) {
+        model.addAttribute("employee", new Employee());
+        model.addAttribute("companies", companyService.findAll());
+        return "add_employee";
+    }
+
     @PostMapping("employee/add")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+//  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String addEmployee(@ModelAttribute("employee") Employee employee, @ModelAttribute("company") Company company) {
+
+        employee.setCompany(company);
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        System.out.println("employee = " + employee);
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         employeeService.save(employee);
-        return ResponseEntity.ok(employee);
+        return "/companies";
     }
 
     @PatchMapping("companies/{companyId}/employees/{employeeId}")
