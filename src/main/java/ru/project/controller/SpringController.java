@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
+import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 
@@ -114,23 +115,28 @@ public class SpringController {
         return "error/503";
     }
 
-    @GetMapping("employee/add")
-    public String addEmployee(Model model) {
+    @GetMapping("companies/{companyId}/employee/add")
+    public String addEmployee(Model model, @PathVariable Long companyId) {
+        System.out.println("\n\n\n\n\n\n\n\n\n\n");
+        System.out.println(companyId.toString());
+        System.out.println("\n\n\n\n\n\n\n\n\n\n");
         model.addAttribute("employee", new Employee());
-        model.addAttribute("companies", companyService.findAll());
+        model.addAttribute("companyId", companyId);
         return "add_employee";
     }
 
-    @PostMapping("employee/add")
+    @PostMapping("companies/{companyId}/employee/post")
 //  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String addEmployee(@ModelAttribute("employee") Employee employee, @ModelAttribute("company") Company company) {
+    public String addEmployee(@ModelAttribute("employee") Employee employee,
+                              @ModelAttribute("company") Company company, @PathVariable Long companyId) throws CompanyNotFoundException {
 
-        employee.setCompany(company);
+        employee.setCompany(companyService.findById(companyId).orElseThrow(
+                () -> new CompanyNotFoundException("Company with id:" + companyId.toString() + " not found")));
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.println("employee = " + employee);
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         employeeService.save(employee);
-        return "/companies";
+        return "redirect:/companies/" + companyId.toString() +"/employees/";
     }
 
     @PatchMapping("companies/{companyId}/employees/{employeeId}")
