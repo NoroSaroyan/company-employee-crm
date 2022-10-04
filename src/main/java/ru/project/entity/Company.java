@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.File;
 
 @Entity
 @Table(name = "companies")
@@ -31,6 +32,30 @@ public class Company {
     @Column(name = "email")
     private String email;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogo_path() {
+        return logo_path;
+    }
+
+    public void setLogo_path(String logo_path) {
+        this.logo_path = logo_path;
+    }
+
+    public File getLogo() {
+        return logo;
+    }
+
+    public void setLogo(File logo) {
+        this.logo = logo;
+    }
+
+    @Column(name = "logo_path")
+    private String logo_path;
+
+    private File logo;
     public Long getId() {
         return id;
     }

@@ -42,30 +42,6 @@ public class SpringController {
         return "company";
     }
 
-    @GetMapping("companies/{companyId}/employees")
-    public String getEmployees(Model model, @PathVariable Long companyId) {
-        List<Employee> employees = employeeService.findAllByCompanyId(companyId, 0, 10);
-        model.addAttribute("employees", employees);
-        return "employees";
-    }
-
-    @GetMapping("companies/{companyId}/employees/{employeeId}")
-    public String getEmployee(Model model, @PathVariable Long employeeId, @PathVariable Long companyId) {
-        Optional<Employee> employee = employeeService.findById(employeeId);
-        if (employee.isPresent()) {
-            model.addAttribute("employee", employee.get());
-            return "employee";
-        }
-        return "error/404";
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("companies/{companyId}/employees/{employeeId}")
-    public String deleteEmployee(Model model, @PathVariable Long companyId, @PathVariable Long employeeId) {
-        employeeService.deleteById(employeeId);
-        return "redirect:/{companyId}/employees";
-    }
-
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("company/add")
     public String addCompany(Model model) {
@@ -93,7 +69,7 @@ public class SpringController {
     @PostMapping(value = "companies/{companyId}/update")
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editCompany(@PathVariable Long companyId, @ModelAttribute("company") Company update) {
-
+        update.setId(companyId);
         try {
             companyService.update(update);
             return "redirect:/companies/" + companyId.toString();
@@ -115,11 +91,34 @@ public class SpringController {
         return "error/503";
     }
 
+    @GetMapping("companies/{companyId}/employees")
+    public String getEmployees(Model model, @PathVariable Long companyId,
+                               @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                               @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+        List<Employee> employees = employeeService.findAllByCompanyId(companyId, page, size);
+        model.addAttribute("employees", employees);
+        return "employees";
+    }
+
+    @GetMapping("companies/{companyId}/employees/{employeeId}")
+    public String getEmployee(Model model, @PathVariable Long employeeId, @PathVariable Long companyId) {
+        Optional<Employee> employee = employeeService.findById(employeeId);
+        if (employee.isPresent()) {
+            model.addAttribute("employee", employee.get());
+            return "employee";
+        }
+        return "error/404";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("companies/{companyId}/employees/{employeeId}")
+    public String deleteEmployee(@PathVariable Long companyId, @PathVariable Long employeeId) {
+        employeeService.deleteById(employeeId);
+        return "redirect:/companies/{companyId}/employees";
+    }
+
     @GetMapping("companies/{companyId}/employee/add")
     public String addEmployee(Model model, @PathVariable Long companyId) {
-        System.out.println("\n\n\n\n\n\n\n\n\n\n");
-        System.out.println(companyId.toString());
-        System.out.println("\n\n\n\n\n\n\n\n\n\n");
         model.addAttribute("employee", new Employee());
         model.addAttribute("companyId", companyId);
         return "add_employee";
@@ -132,19 +131,24 @@ public class SpringController {
 
         employee.setCompany(companyService.findById(companyId).orElseThrow(
                 () -> new CompanyNotFoundException("Company with id:" + companyId.toString() + " not found")));
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("employee = " + employee);
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         employeeService.save(employee);
-        return "redirect:/companies/" + companyId.toString() +"/employees/";
+        return "redirect:/companies/" + companyId.toString() + "/employees/";
     }
 
-    @PatchMapping("companies/{companyId}/employees/{employeeId}")
+    @GetMapping("companies/{companyId}/employees/{employeeId}/edit")
+    public String editEmployee(Model model, @PathVariable Long employeeId) {
+        Employee employee = employeeService.findById(employeeId).orElseThrow(IllegalArgumentException::new);
+        model.addAttribute("employee", employee);
+        return "edit_employee";
+    }
+
+    @PostMapping("companies/{companyId}/employees/{employeeId}/update")
 //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String editEmployee(@PathVariable Long employeeId, @RequestBody Employee update, @PathVariable Long companyId) {
+    public String editEmployee(@PathVariable Long employeeId, @ModelAttribute Employee update, @PathVariable Long companyId) {
+        update.setId(employeeId);
         try {
             employeeService.update(update);
-            return "redirect:companies/" + companyId.toString() + "/employees/";
+            return "redirect:companies/" + companyId.toString() + "/employees/"+ employeeId.toString();
 
         } catch (Exception e) {
             return "error/503";

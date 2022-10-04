@@ -96,4 +96,8 @@ public class Employee {
         this.phone_number = phone_number;
         this.company = company;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
