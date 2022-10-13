@@ -31,9 +31,14 @@ public class SpringController {
     public String getAllCompanies(Model model,
                                   @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+
         List<Company> companyList = companyService.findAll(page, size);
+
+//        List<Integer> numberOfPages = PagingUtil.findNumberOfPages(companyService.findAll().size());
+
         model.addAttribute("companies", companyList);
-        return "home";
+//        model.addAttribute("numberOfPages", numberOfPages);
+        return "companies";
     }
 
     @GetMapping("companies/{companyId}")
@@ -102,12 +107,8 @@ public class SpringController {
 
     @GetMapping("companies/{companyId}/employees/{employeeId}")
     public String getEmployee(Model model, @PathVariable Long employeeId, @PathVariable Long companyId) {
-        Optional<Employee> employee = employeeService.findById(employeeId);
-        if (employee.isPresent()) {
-            model.addAttribute("employee", employee.get());
-            return "employee";
-        }
-        return "error/404";
+        model.addAttribute("employee", employeeService.findById(employeeId));
+        return "employee";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -136,20 +137,21 @@ public class SpringController {
     }
 
     @GetMapping("companies/{companyId}/employees/{employeeId}/edit")
-    public String editEmployee(Model model, @PathVariable Long employeeId) {
+    public String editEmployee(Model model, @PathVariable Long employeeId, @PathVariable String companyId) {
         Employee employee = employeeService.findById(employeeId).orElseThrow(IllegalArgumentException::new);
+
         model.addAttribute("employee", employee);
+
         return "edit_employee";
     }
 
     @PostMapping("companies/{companyId}/employees/{employeeId}/update")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editEmployee(@PathVariable Long employeeId, @ModelAttribute Employee update, @PathVariable Long companyId) {
         update.setId(employeeId);
         try {
             employeeService.update(update);
-            return "redirect:companies/" + companyId.toString() + "/employees/"+ employeeId.toString();
-
+            return "redirect:/companies/" + companyId + "/employees";
         } catch (Exception e) {
             return "error/503";
         }

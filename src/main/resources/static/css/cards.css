@@ -1,119 +1,119 @@
-@mixin media() {
-    @media (min-width: 768px) {
-        @content;
-    }
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
-body, html {
-    font-family: 'Vollkorn', serif;
-    font-weight: 400;
-    line-height: 1.3;
-    font-size: 16px;
+body {
+    font-family: "Quicksand", sans-serif;
+    display: grid;
+    place-items: start;
+    height: 100vh;
+    background: #7f7fd5;
+    background: linear-gradient(#91eae4, #86a8e7, #7f7fd5);
+    width: initial;
 }
 
-.siteTitle {
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    min-width: 320px;
+    margin-block: 2rem;
+    gap: 2rem;
+}
+
+img {
+    max-width: 100%;
     display: block;
-    font-weight: 900;
-    font-size: 30px;
-    margin: 20px 0;
-}
-
-@include media {
-    font-size: 60px;
-}
-
-header,
-main,
-footer {
-    max-width: 960px;
-    margin: 0 auto;
+    object-fit: cover;
 }
 
 .card {
-    height: 400px;
     position: relative;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: flex-end;
-    text-decoration: none;
-    border: 4px solid darkblue;
-    margin-bottom: 20px;
-    background-image: url('https://images.unsplash.com/photo-1516051662687-567d7c4e8f6a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80');
-    background-size: cover;
-}
-@include media {
-    height: 500px;
-}
-
-
-.inner {
-    height: 50%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    box-sizing: border-box;
-    padding: 40px;
-}
-@include media {
-    width: 50%;
-    height: 100%;
+    width: clamp(20rem, calc(20rem + 2vw), 22rem);
+    overflow: hidden;
+    box-shadow: 0 .1rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 1em;
+    background: #ECE9E6;
+    background: linear-gradient(to right, #FFFFFF, #ECE9E6);
 }
 
+.card__body {
 
-.title {
-    font-size: 24px;
-    color: black;
-    text-align: center;
-    font-weight: 700;
-    color: #181818;
-    text-shadow: 0px 2px 2px #a6f8d5;
-    position: relative;
-    margin: 0 0 20px 0;
-}
-@include media {
-    font-size: 30px;
-}
-
-
-.subtitle {
-    color: darkgreen;
-    text-align: center;
-}
-
-.card2 {
-    background-image: url('https://images.unsplash.com/photo-1496317556649-f930d733eea3?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-}
-
-.card3 {
-    background-image: url('https://images.unsplash.com/photo-1557576842-3bc6093a5085?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-}
-
-footer {
+    padding: 1rem;
     display: flex;
-    justify-content: center;
-    margin: 40px 0;
+    flex-direction: column;
+    gap: .5rem;
 }
 
-.footerLink {
-    margin-right: 12px;
-    color: #181818;
-    text-decoration: none;
-    position: relative;
+.tag {
+    align-self: flex-start;
+    padding: .25em .75em;
+    border-radius: 1em;
+    font-size: .75rem;
 }
 
-.after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 4px;
-    background-color: rgba(#b0215e, 0.3);
-    left: 0;
-    bottom: 0;
+.tag + .tag {
+    margin-left: .5em;
 }
 
-.last-child {
-    margin-right: 0;
+.tag-blue {
+    background: #56CCF2;
+    background: linear-gradient(to bottom, #2F80ED, #56CCF2);
+    color: #fafafa;
+}
+
+.tag-brown {
+    background: #D1913C;
+    background: linear-gradient(to bottom, #FFD194, #D1913C);
+    color: #fafafa;
+}
+
+.tag-red {
+    background: #cb2d3e;
+    background: linear-gradient(to bottom, #ef473a, #cb2d3e);
+    color: #fafafa;
+}
+
+.card__body h4 {
+    font-size: 1.5rem;
+    text-transform: capitalize;
+}
+
+.card__footer {
+    display: flex;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+.user {
+    display: flex;
+    gap: .5rem;
+}
+
+.user__image {
+    border-radius: 50%;
+}
+
+.user__info > small {
+    color: #666;
+}
+
+.card-text {
+    line-height: 25px;
+    color: #4a4a4a;
+    align-content: space-evenly;
+}
+
+.card-text-header {
+    font-weight: bold;
+    color: #4a4a4a;
+    align-content: center;
 }
