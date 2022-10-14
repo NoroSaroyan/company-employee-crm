@@ -58,7 +58,7 @@ body {
     flex-wrap: wrap;
     justify-content: left;
     left: 10px;
-    top: 10px;
+    top: -40px;
     min-width: 320px;
     margin-block: 2rem;
     gap: 2rem;

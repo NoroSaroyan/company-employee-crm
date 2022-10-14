@@ -32,8 +32,8 @@ public class SpringController {
                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
         List<Company> companyList = companyService.findAll(page, size);
-
 //        List<Integer> numberOfPages = PagingUtil.findNumberOfPages(companyService.findAll().size());
+
 
         model.addAttribute("companies", companyList);
 //        model.addAttribute("numberOfPages", numberOfPages);
@@ -110,7 +110,7 @@ public class SpringController {
         return "employee";
     }
 
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("companies/{companyId}/employees/{employeeId}/delete")
     public String deleteEmployee(@PathVariable Long companyId, @PathVariable Long employeeId) {
         employeeService.deleteById(employeeId);

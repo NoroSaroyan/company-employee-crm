@@ -3,40 +3,31 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="/css/login.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
-    <link href="/css/nucleo-icons.css" rel="stylesheet"/>
-    <link href="/css/nucleo-svg.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/cards.css">
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <link id="pagestyle" href="/css/material-kit.css?v=3.0.2" rel="stylesheet"/>
     <title>
-        Employees
+        All Employees
     </title>
 </head>
-<div th:replace="/fragments/header :: header"></div>
+<div th:replace="fragments/header :: header"></div>
 
-<h3 style="left: 10px; top: 10px">
-    <a class="active" th:text="'Back to Company'" th:href="@{'/companies/'+${companyId}+'/'}"></a>
-</h3>
-
-<body th:if="${!employees.isEmpty()}" th:each="employee : ${employees}">
-<div class="container">
-    <div class="card">
-        <div class="card__body">
-            <div class="card-text">
-                <a class="active"
-                   th:href="@{'/companies/'+${employee.getCompany().getId()}+'/employees/'+${employee.getId()}}"
-                   th:text="${employee.getName()}+' '+ ${employee.getSurname()}"></a>
+<body th:if="${!employees.isEmpty()}">
+<div class="row">
+    <div class="container" th:each="employee :${employees}" style="column-gap: normal">
+        <div class="column">
+            <div class="card">
+                <div class="card__body">
+                    <div class="card-text">
+                        <h3>
+                            <a class="link"
+                               th:href="@{'/companies/'+ ${employee.getCompany().getId()}+'/employees/'+${employee.getId()}}"
+                               th:text="${employee.getName()}+' '+${employee.getSurname()}" style="color: black"></a>
+                        </h3>
+                    </div>
+                    <p class="card-text" th:text="${'Email: '+employee.getEmail()}"></p>
+                    <p class="card-text" th:text="${'Contact: '+employee.getPhone_number()}"></p>
+                </div>
             </div>
-            <p class="card-text" th:text="${employee.getEmail()}"></p>
-            <p class="card-text" th:text="${employee.getPhone_number()}"></p>
         </div>
     </div>
 </div>
 </body>
-</html>
-
