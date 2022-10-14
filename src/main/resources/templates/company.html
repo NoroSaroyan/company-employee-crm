@@ -17,15 +17,14 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div class="row">
-    <div class="container" style="position: relative; right: -30%; top: -10%" th:if="${!company.isEmpty()}">
+    <div class="container"  th:if="${!company.isEmpty()}">
         <div class="card">
             <div class="card__body">
                 <div class="card-text">
-                    <a th:text="${company.get().getName()}"></a>
+                    <h3 th:text="${company.get().getName()}"></h3>
                 </div>
-                <p class="card-text" th:text="${company.get().getEmail()}"></p>
-                <p class="card-text" th:text="${company.get().getWebsite()}"></p>
+                <p class="card-text" th:text="${'Email'+company.get().getEmail()}"></p>
+                <p class="card-text" th:text="${'Website'+company.get().getWebsite()}"></p>
                 <div class="card-text">
                     <a class="active" th:href="@{'/companies/'+ ${company.get().getId()} + '/employees/'}"
                        th:text="Employees" style="color: black"></a>
@@ -38,7 +37,7 @@
                         </a>
                     </div>
 
-                    <div class="btn btn-danger">
+                    <div>
                         <a class="btn btn-danger"
                            th:href="@{'/companies/'+${company.get().getId()}+'/delete'}">Delete
                         </a>
@@ -54,40 +53,6 @@
             </div>
         </div>
     </div>
-
-    <!--    <div class="container" th:if="${!company.isEmpty()}">-->
-    <!--        <div class="card">-->
-    <!--            <div class="card__body">-->
-    <!--                <h3 class="card-text-header" th:text="${company.get().getName()}"></h3>-->
-    <!--                <p class="card-text" th:text="'Contact: '+${company.get().getEmail()}"></p>-->
-    <!--                <p class="card-text" th:text="'Website: '+${company.get().getWebsite()}"></p>-->
-
-    <!--                <div>-->
-    <!--                    <a class="active" th:href="@{'/companies/'+ ${company.get().getId()} + '/employees/'}"-->
-    <!--                       th:text="Employees" style="color: darkblue"></a>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--            <div class="text-center">-->
-    <!--                <div>-->
-    <!--                    <a class="btn btn-success" style="size: 30px"-->
-    <!--                       th:text="'Add Employee'"-->
-    <!--                       th:href="@{'/companies/'+${company.get().getId()}+'/employee/add'}">-->
-    <!--                    </a>-->
-    <!--                </div>-->
-    <!--                <div>-->
-    <!--                    <a class="btn btn-danger" style="size: 30px"-->
-    <!--                       th:href="@{'/companies/'+${company.get().getId()}+'/delete'}">Delete-->
-    <!--                    </a>-->
-    <!--                </div>-->
-    <!--                <div>-->
-    <!--                    <a class="btn btn-dark" style="size: 30px"-->
-    <!--                            th:href="@{'/companies/'+${company.get().getId()}+'/edit'}">Edit-->
-    <!--                    </a>-->
-    <!--                </div>-->
-
-    <!--            </div>-->
-    <!--        </div>-->
-</div>
 </div>
 </body>
 </html>

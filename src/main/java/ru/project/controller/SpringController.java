@@ -1,7 +1,6 @@
 package ru.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -111,8 +110,8 @@ public class SpringController {
         return "employee";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("companies/{companyId}/employees/{employeeId}")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("companies/{companyId}/employees/{employeeId}/delete")
     public String deleteEmployee(@PathVariable Long companyId, @PathVariable Long employeeId) {
         employeeService.deleteById(employeeId);
         return "redirect:/companies/{companyId}/employees";
@@ -136,7 +135,7 @@ public class SpringController {
         return "redirect:/companies/" + companyId.toString() + "/employees/";
     }
 
-    @GetMapping("companies/{companyId}/employees/{employeeId}/edit")
+    @GetMapping(value = "companies/{companyId}/employees/{employeeId}/edit")
     public String editEmployee(Model model, @PathVariable Long employeeId, @PathVariable String companyId) {
         Employee employee = employeeService.findById(employeeId).orElseThrow(IllegalArgumentException::new);
 
@@ -145,7 +144,7 @@ public class SpringController {
         return "edit_employee";
     }
 
-    @PostMapping("companies/{companyId}/employees/{employeeId}/update")
+    @PostMapping(value = "companies/{companyId}/employees/{employeeId}/update")
 //  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editEmployee(@PathVariable Long employeeId, @ModelAttribute Employee update, @PathVariable Long companyId) {
         update.setId(employeeId);

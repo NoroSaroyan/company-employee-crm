@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<!--    <link rel="stylesheet" href="/css/login.css"/>-->
+    <link rel="stylesheet" href="/css/login.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
@@ -18,25 +18,25 @@
     </title>
 </head>
 <div th:replace="/fragments/header :: header"></div>
-<body th:if="${!employees.isEmpty()}" th:each="employee : ${employees}">
 
+<h3 style="left: 10px; top: 10px">
+    <a class="active" th:text="'Back to Company'" th:href="@{'/companies/'+${companyId}+'/'}"></a>
+</h3>
+
+<body th:if="${!employees.isEmpty()}" th:each="employee : ${employees}">
 <div class="container">
-        <div class="card">
-            <div class="card__body">
-                <div class="card-text">
-                    <a class="active"
-                       th:href="@{'/companies/'+${employee.getCompany().getId()}+'/employees/'+${employee.getId()}}"
-                       th:text="${employee.getName()}"></a>
-                </div>
-                <p class="card-text" th:text="${employee.getEmail()}"></p>
-                <p class="card-text" th:text="${employee.getPhone_number()}"></p>
+    <div class="card">
+        <div class="card__body">
+            <div class="card-text">
+                <a class="active"
+                   th:href="@{'/companies/'+${employee.getCompany().getId()}+'/employees/'+${employee.getId()}}"
+                   th:text="${employee.getName()}+' '+ ${employee.getSurname()}"></a>
             </div>
-            <div>
-                <a class="btn btn-success" th:href="@{'companies/'+${employee.getCompany().getId()}+'/employees/'+${employee.getId()}+'/edit'}">Edit</a>
-                <a class="btn btn-danger" th:href="@{'companies/'+${employee.getCompany().getId()}+'/employees/'+${employee.getId()}+'/delete'}">Edit</a>
-            </div>
+            <p class="card-text" th:text="${employee.getEmail()}"></p>
+            <p class="card-text" th:text="${employee.getPhone_number()}"></p>
         </div>
     </div>
+</div>
 </body>
 </html>
 

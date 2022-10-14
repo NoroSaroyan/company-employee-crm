@@ -16,22 +16,22 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div class="row">
-    <div class="col card-deck ml-5 my-3" th:if="${!employee.isEmpty()}">
+<div class="container" th:if="${!employee.isEmpty()}">
         <div class="card">
             <div class="card2">
                 <h3 class="card-text" th:text="${employee.get().getName()} + ' ' + ${employee.get().getSurname()}"></h3>
-                <p class="card-text" th:text="${employee.get().getEmail()}"></p>
-                <p class="card-text" th:text="${employee.get().getPhone_number()}"></p>
+                <p class="card-text" th:text="' '"></p>
+                <p class="card-text" th:text="${'Email: '+employee.get().getEmail()}"></p>
+                <p class="card-text" th:text="${'Phone: '+employee.get().getPhone_number()}"></p>
+            </div>
+            <div>
+                <a class="btn btn-success" th:with="companyId=${employee.get().getCompany().getId()}"
+                   th:href="@{'/companies/'+${companyId}+'/employees/'+${employeeId}+'/edit'}">Edit</a>
+                <a class="btn btn-danger" th:with="companyId=${employee.get().getCompany().getId()}"
+                   th:href="@{'/companies/'+${companyId}+'/employees/'+${employeeId}+'/delete'}">Delete</a>
             </div>
         </div>
-        <div>
-            <a class="active" th:with="companyId=${employee.get().getCompany().getId()}"
-               th:href="@{'/companies/'+${companyId}+'/employees/'+${employeeId}+'/edit'}">Edit</a>
-            <a class="btn-danger" th:with="companyId=${employee.get().getCompany().getId()}"
-               th:href="@{'/companies/'+${companyId}+'/employees/'+${employeeId}+'/delete'}">Delete</a>
-        </div>
+
     </div>
-</div>
 </body>
 </html>
