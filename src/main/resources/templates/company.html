@@ -9,45 +9,48 @@
     <link rel="stylesheet" href="/css/cards.css">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="/css/button.css" rel="stylesheet">
+    <link href="/css/header2.scss" rel="stylesheet">
+    <link href="/css/cards.css" rel="stylesheet">
     <title>Company</title>
 </head>
-<body>
+<body style="width: 400px">
 <div th:replace="fragments/header :: header"></div>
-    <div class="container"  th:if="${!company.isEmpty()}" style="position:relative; top: -30%">
-        <div class="card">
-            <div class="card__body">
-                <div class="card-text">
-                    <h3 th:text="${company.get().getName()}"></h3>
-                </div>
-                <p class="card-text" th:text="${'Email: '+company.get().getEmail()}"></p>
-                <p class="card-text" th:text="${'Website: '+company.get().getWebsite()}"></p>
-                <div class="card-text">
-                    <a class="active" th:href="@{'/companies/'+${company.get().getId()}+'/employees'}"
-                       th:text="Employees" style="color: black"></a>
-                </div>
-                <div class="text-center">
-                    <div>
-                        <a class="btn-success"
-                           th:text="'Add Employee'"
-                           th:href="@{'/companies/'+${company.get().getId()}+'/employee/add'}">
-                        </a>
-                    </div>
+<div class="container" th:if="${!company.isEmpty()}" style="position:relative; top: 0; width: 400px">
+    <div class="card" style="width: 600px; height: 800px">
+        <img src="/static/images/logo1_google.jpg" alt="image"
+             style="width: 200px; height: 200px">
 
-                    <div>
-                        <a class="btn-danger"
-                           th:href="@{'/companies/'+${company.get().getId()}+'/delete'}">Delete
-                        </a>
-                    </div>
-
-                    <div>
-                        <a class="btn-dark"
-                           th:href="@{'/companies/'+${company.get().getId()}+'/edit'}">Edit
-                        </a>
-                    </div>
-
-                </div>
+        <div class="card__body">
+            <div class="row">
+                <h1 th:text="${company.get().getName()}"></h1>
+            </div>
+            <p class="card-text" th:text="${'Email: '+company.get().getEmail()}"></p>
+            <p class="card-text" th:text="${'Website: '+company.get().getWebsite()}"></p>
+            <div class="card-text">
+                <a class="active" th:href="@{'/companies/'+${company.get().getId()}+'/employees'}"
+                   th:text="Employees" style="color: black"></a>
             </div>
         </div>
+        <div class="row">
+
+            <a class="button-success"
+               th:text="'Add Employee'"
+               th:href="@{'/companies/'+${company.get().getId()}+'/employee/add'}">
+            </a>
+
+            <a class="button-delete"
+               th:href="@{'/companies/'+${company.get().getId()}+'/delete'}">Delete
+            </a>
+
+            <a class="button-edit"
+               th:href="@{'/companies/'+${company.get().getId()}+'/edit'}">Edit
+            </a>
+
+        </div>
+    </div>
 </div>
+
 </body>
+
 </html>

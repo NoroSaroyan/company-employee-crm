@@ -9,60 +9,91 @@
     <link rel="stylesheet" href="/css/cards.css">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="/css/forms.css" rel="stylesheet">
     <title>
         Edit page
     </title>
 </head>
-<body style="background-color: white">
-<div th:replace="fragments/header :: header"></div>
-<div class="container" style="position:relative; left: 25%; top:10%;">
-    <div class="row">
-        <div class="col-lg-4 col-md-8 col-12 mx-auto">
-            <div class="card z-index-0 fadeIn3 fadeInBottom">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2" style="background-color: #0d376f">
-                    <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1">
-                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Edit</h4>
-                    </div>
-                </div>
 
-                <div class="card__body">
-                    <form th:object="${company}" th:action="@{'/companies/'+${companyId}+'/update'}" method="POST"
-                          role="form"
-                          class="text-start" enctype="multipart/form-data">
+<body>
+<div th:replace="fragments/header :: header" style="position: absolute; top: 0;"></div>
 
-                        <div class="input-group input-group-outline my-3">
-                            <label class="form-label"></label>
-                            <input type="text" id="name" name="name" th:field="${company.name}"
-                                   th:value="${company.getName()}"
-                                   class="form-control">
-                        </div>
-
-                        <div class="input-group input-group-outline mb-3">
-                            <label class="form-label"></label>
-                            <input type="email" id="email" name="email" th:field="${company.email}"
-                                   th:value="${company.getEmail()}"
-                                   class="form-control">
-                        </div>
-
-                        <div class="input-group input-group-outline mb-3">
-                            <label class="form-label"></label>
-                            <input type="text" id="website" name="website" th:field="${company.website}"
-                                   th:value="${company.getWebsite()}"
-                                   class="form-control">
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn bg-gradient-success 40 my-4 mb-2">Edit</button>
-                            <button type="reset" class="btn bg-gradient-faded-danger 40 my-4 mb-2">Reset</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="row">
+    <div class="form" style="position: relative; left: 300px">
+        <div class="title">Edit</div>
+        <div class="input-container ic1">
+            <input id="firstname" class="input" type="text" placeholder=" "/>
+            <div class="cut"></div>
+            <label for="firstname" class="placeholder">First name</label>
         </div>
+        <div class="input-container ic2">
+            <input id="lastname" class="input" type="text" placeholder=" "/>
+            <div class="cut"></div>
+            <label for="lastname" class="placeholder">Last name</label>
+        </div>
+        <div class="input-container ic2">
+            <input id="email" class="input" type="text" placeholder=" "/>
+            <div class="cut cut-short"></div>
+            <label for="email" class="placeholder">Email</label>
+        </div>
+        <button type="text" class="submit">submit</button>
     </div>
 </div>
-<!--<div th:replace="fragments/footer :: footer"></div>-->
 </body>
-</html>
+
+
+
+
+<!--<body style="background-color: white">-->
+<!--<div class="container" style="position:relative; left: 40%; top:0;">-->
+<!--    <div class="row">-->
+<!--        <div class="col-lg-4 col-md-8 col-12 mx-auto">-->
+<!--            <div class="card z-index-0 fadeIn3 fadeInBottom">-->
+<!--                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2" style="background-color: #0d376f">-->
+<!--                    <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1">-->
+<!--                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Edit</h4>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="card">-->
+<!--                    <div class="card__body">-->
+<!--                        <form th:object="${company}" th:action="@{'/companies/'+${companyId}+'/update'}" method="POST"-->
+<!--                              role="form"-->
+<!--                              class="text-start" enctype="multipart/form-data">-->
+
+<!--                            <div class="input-group input-group-outline my-3">-->
+<!--                                <label class="form-label"></label>-->
+<!--                                <input type="text" id="name" name="name" th:field="${company.name}"-->
+<!--                                       th:value="${company.getName()}"-->
+<!--                                       class="form-control">-->
+<!--                            </div>-->
+
+<!--                            <div class="input-group input-group-outline mb-3">-->
+<!--                                <label class="form-label"></label>-->
+<!--                                <input type="email" id="email" name="email" th:field="${company.email}"-->
+<!--                                       th:value="${company.getEmail()}"-->
+<!--                                       class="form-control">-->
+<!--                            </div>-->
+
+<!--                            <div class="input-group input-group-outline mb-3">-->
+<!--                                <label class="form-label"></label>-->
+<!--                                <input type="text" id="website" name="website" th:field="${company.website}"-->
+<!--                                       th:value="${company.getWebsite()}"-->
+<!--                                       class="form-control">-->
+<!--                            </div>-->
+
+<!--                            <div class="text-center">-->
+<!--                                <button type="submit" class="btn bg-gradient-success 40 my-4 mb-2">Edit</button>-->
+<!--                                <button type="reset" class="btn bg-gradient-faded-danger 40 my-4 mb-2">Reset</button>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--&lt;!&ndash;<div th:replace="fragments/footer :: footer"></div>&ndash;&gt;-->
+<!--</body>-->
+<!--</html>-->
 
 
