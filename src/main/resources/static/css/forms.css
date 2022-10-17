@@ -1,12 +1,13 @@
 body {
     /*align-items: center;*/
     background: #7f7fd5;
-    background: linear-gradient(#91eae4, #86a8e7, #7f7fd5);    display: flex;
+    background: linear-gradient(#91eae4, #86a8e7, #7f7fd5);
+    display: flex;
     /*justify-content: center;*/
     /*height: 100vh;*/
 }
 
-.form {
+.my_container {
     background-color: #15172b;
     border-radius: 20px;
     box-sizing: border-box;
@@ -49,6 +50,19 @@ body {
 }
 
 .input {
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+}
+
+.form-control {
     background-color: #303245;
     border-radius: 12px;
     border: 0;
@@ -117,7 +131,7 @@ body {
     font-size: 18px;
     height: 50px;
     margin-top: 38px;
-// outline: 0;
+/ / outline: 0;
     text-align: center;
     width: 100%;
 }

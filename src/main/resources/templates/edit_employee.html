@@ -9,67 +9,61 @@
     <link rel="stylesheet" href="/css/cards.css">
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="/css/forms.css" rel="stylesheet">
+    <link href="/css/button.css" rel="stylesheet">
     <title>
-        Edit page
+        Edit Employee
     </title>
 </head>
 <body style="background-color: white">
 <div th:replace="fragments/header :: header"></div>
-<div class="container" style="position:relative; left:25%; top:10%;">
+<form style="position: relative; left: 35%; top: 25%" th:object="${employee}"
+      th:action="@{'/companies/'+${employee.getCompany().getId()}+'/employees/'+${employee.getId()}+'/update'}"
+      method="POST" class="text-start"
+      enctype="multipart/form-data" role="form">
+
     <div class="row">
-        <div class="col-lg-4 col-md-8 col-12 mx-auto">
-            <div class="card z-index-0 fadeIn3 fadeInBottom">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2" style="background-color: #0d376f">
-                    <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1">
-                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Edit</h4>
-                    </div>
-                </div>
+        <div class="my_container" style="height: 600px">
 
-                <div class="card__body">
-                    <form th:object="${employee}"
-                          th:action="@{'/companies/'+${companyId}+'/employees/'+${employeeId}+'/update'}" method="POST"
-                          role="form"
-                          class="text-start" enctype="multipart/form-data">
+            <div class="title">Edit Employee</div>
 
-                        <div class="input-group input-group-outline my-3">
-                            <label class="form-label"></label>
-                            <input type="text" id="name" name="name" th:field="${employee.name}"
-                                   th:value="${employee.getName()}"
-                                   class="form-control">
-                        </div>
+            <div class="input-container ic1">
+                <input id="name" th:value="${employee.getName()}" th:field="${employee.name}" class="input" type="text"
+                       placeholder=" "/>
+                <div class="cut"></div>
+                <label for="name" class="placeholder">Name</label>
+            </div>
 
-                        <div class="input-group input-group-outline mb-3">
-                            <label class="form-label"></label>
-                            <input type="text" id="surname" name="surname" th:field="${employee.surname}"
-                                   th:value="${employee.getSurname()}"
-                                   class="form-control">
-                        </div>
+            <div class="input-container ic1">
+                <input id="surname" th:value="${employee.getSurname()}" th:field="${employee.surname}" class="input"
+                       type="text"
+                       placeholder=" "/>
+                <div class="cut"></div>
+                <label for="surname" class="placeholder">Surname</label>
+            </div>
 
-                        <div class="input-group input-group-outline mb-3">
-                            <label class="form-label"></label>
-                            <input type="email" id="email" name="email" th:field="${employee.email}"
-                                   th:value="${employee.getEmail()}"
-                                   class="form-control">
-                        </div>
+            <div class="input-container ic2">
+                <input id="email" th:value="${employee.getEmail()}" th:field="${employee.email}" class="input"
+                       type="text"
+                       placeholder=" "/>
+                <div class="cut"></div>
+                <label for="email" class="placeholder">Email</label>
+            </div>
 
-                        <div class="input-group input-group-outline mb-3">
-                            <label class="form-label"></label>
-                            <input type="text" id="website" name="website" th:field="${employee.phone_number}"
-                                   th:value="${employee.getPhone_number()}"
-                                   class="form-control">
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn bg-gradient-success 40 my-4 mb-2">Edit</button>
-                            <button type="reset" class="btn bg-gradient-faded-danger 40 my-4 mb-2">Reset</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="input-container ic2">
+                <input id="phone_number" th:value="${employee.getPhone_number()}" th:field="${employee.phone_number}"
+                       class="input"
+                       type="text" placeholder=" "/>
+                <div class="cut"></div>
+                <label for="phone_number" class="placeholder">Phone Number</label>
+            </div>
+            <div class="text-center" style="position: relative; bottom: -3%">
+                <button type="submit" class="button-success">Edit</button>
+                <button type="reset" class="button-delete">Reset</button>
             </div>
         </div>
     </div>
-</div>
-
+</form>
 </body>
 </html>
 

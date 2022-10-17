@@ -3,41 +3,31 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" type="text/css"
-          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"/>
     <link rel="stylesheet" href="/css/cards.css">
-    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <title>
         All Companies
     </title>
 </head>
-<body>
+
 <div th:replace="fragments/header :: header"></div>
 
-<div class="container" th:if="${!companies.isEmpty()}" th:each="company : ${companies}">
-    <div class="card">
-        <div class="card__body">
-            <div class="card-text">
-                <a class="active" th:href="@{'/companies/'+ ${company.getId()}}"
-                   th:text="${company.getName()}"></a>
-            </div>
-            <p class="card-text" th:text="${company.getEmail()}"></p>
-            <p class="card-text" th:text="${company.getWebsite()}"></p>
-            <div class="card-text">
-                <a class="active" th:href="@{'/companies/'+ ${company.getId()} + '/employees/'}"
-                   th:text="Employees" style="color: black"></a>
+<body th:if="${!companies.isEmpty()}">
+<div class="row">
+    <div class="container" th:each="company :${companies}" style="gap: 15px">
+        <div class="column">
+            <div class="card">
+                <div class="card__body">
+                    <div class="card-text">
+                        <h3>
+                            <a class="link" th:href="@{'/companies/'+ ${company.getId()}}"
+                               th:text="${company.getName()}" style="color: black"></a>
+                        </h3>
+                    </div>
+                    <p class="card-text" th:text="${'Email: '+company.getEmail()}"></p>
+                    <p class="card-text" th:text="${'Website: '+company.getWebsite()}"></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!--            <div th:if="${page.total() > 0}" class="pagination"-->
-<!--                 th:each="pageNumber : ${numberOfPages}">-->
-<!--                <a th:href="@{/companies(page=${pageNumber},size=${10})}"-->
-<!--                   th:text=${pageNumber}-->
-<!--                   th:class="${pageNumber==page.number() + 1} ? active"></a>-->
-<!--            </div>-->
 </body>
-
-
