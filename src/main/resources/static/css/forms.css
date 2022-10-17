@@ -1,9 +1,9 @@
 body {
-    align-items: center;
+    /*align-items: center;*/
     background: #7f7fd5;
     background: linear-gradient(#91eae4, #86a8e7, #7f7fd5);    display: flex;
-    justify-content: center;
-    height: 100vh;
+    /*justify-content: center;*/
+    /*height: 100vh;*/
 }
 
 .form {
@@ -13,6 +13,9 @@ body {
     height: 500px;
     padding: 20px;
     width: 320px;
+    position: relative;
+    top: 0;
+    left: -65%;
 }
 
 .title {
