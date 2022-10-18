@@ -10,47 +10,39 @@
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link href="/css/button.css" rel="stylesheet">
-    <link href="/css/header.scss" rel="stylesheet">
     <link href="/css/cards.css" rel="stylesheet">
     <title>Company</title>
 </head>
-<body style="width: 400px">
+<body style="width: 400px;">
 <div th:replace="fragments/header :: header"></div>
-<div class="container" th:if="${!company.isEmpty()}" style="position:relative; top: 0; width: 400px">
-    <div class="card" style="width: 600px; height: 800px">
-        <img src="/images/logo1_google.jpg" alt="image"
-             style="width: 200px; height: 200px">
-
+<div class="container" th:if="${!employee.isEmpty()}"
+     style="position:relative; top: -15%; width: 400px">
+    <div class="card" style="width: 600px; height: 300px">
         <div class="card__body">
             <div class="row">
-                <h1 th:text="${company.get().getName()}"></h1>
+                <h1 th:text="${employee.get().getName()}+' '+${employee.get().getSurname()}"></h1>
             </div>
-            <p class="card-text" th:text="${'Email: '+company.get().getEmail()}"></p>
-            <p class="card-text" th:text="${'Website: '+company.get().getWebsite()}"></p>
-            <div class="card-text">
-                <a class="active" th:href="@{'/companies/'+${company.get().getId()}+'/employees'}"
-                   th:text="Employees" style="color: black"></a>
+            <div class="row">
+                <div class="column" style="width: 100%; position: relative; left: -22%">
+                    <h4 class="card-text" th:text="${'Email: '+employee.get().getEmail()}"></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column" style="width: 100%; position: relative; left: -30%">
+                    <h4 class="card-text" th:text="${'Phone: '+employee.get().getPhone_number()}"></h4>
+                </div>
             </div>
         </div>
         <div class="row">
-
-            <a class="button-success"
-               th:text="'Add Employee'"
-               th:href="@{'/companies/'+${company.get().getId()}+'/employee/add'}">
-            </a>
-
             <a class="button-delete"
-               th:href="@{'/companies/'+${company.get().getId()}+'/delete'}">Delete
+               th:href="@{'/companies/'+${employee.get().getCompany().getId()}+'/employees/'+${employee.get().getId()}+'/delete'}">Delete
             </a>
 
             <a class="button-edit"
-               th:href="@{'/companies/'+${company.get().getId()}+'/edit'}">Edit
+               th:href="@{'/companies/'+${employee.get().getCompany().getId()}+'/employees/'+${employee.get().getId()}+'/edit'}">Edit
             </a>
-
         </div>
     </div>
 </div>
-
 </body>
-
 </html>

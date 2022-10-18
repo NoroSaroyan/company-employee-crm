@@ -2,6 +2,7 @@ package ru.project.service;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.project.entity.Employee;
 import ru.project.repository.EmployeeRepository;
 
@@ -58,6 +59,7 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
+    @Transactional
     public void update(Employee employee) {
         employeeRepository.update(
                 employee.getId(),
