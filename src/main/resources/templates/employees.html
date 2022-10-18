@@ -30,4 +30,11 @@
         </div>
     </div>
 </div>
+
+<div class="pagination">
+    <a th:each="pageNumber : ${numberOfPages}" th:href="'/companies/?size=10&page='+${pageNumber}"
+       th:with="display=${pageNumber}+1" th:text="${display}"
+       th:class="${pageNumber==currentPage} ? active"></a>
+</div>
+
 </body>

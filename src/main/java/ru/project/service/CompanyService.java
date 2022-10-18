@@ -42,11 +42,12 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-
+    public long getCount(){
+        return companyRepository.count();
+    }
     public Optional<Company> findById(Long id) {
         return companyRepository.findById(id);
     }
-
 
     public void update(Company company) {
         companyRepository.update(

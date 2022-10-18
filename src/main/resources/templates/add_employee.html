@@ -18,7 +18,7 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <form style="height: 650px; position: relative; left: 35%; top: 25%;" th:object="${employee}"
-      th:action="@{'/companies/'+${companyId}+'/employees/post'}"
+      th:action="@{'/companies/'+${companyId}+'/employee/post'}"
       method="POST" class="text-start"
       enctype="multipart/form-data" role="form">
 
@@ -57,67 +57,11 @@
                 <label for="phone_number" class="placeholder">Phone Number</label>
             </div>
             <div class="text-center" style="position: relative; bottom: -3%">
-                <button type="submit" class="button-success">Edit</button>
+                <button type="submit" class="button-success">Create</button>
                 <button type="reset" class="button-delete">Reset</button>
             </div>
         </div>
     </div>
-    <!--</form>-->
-
-    <!--<form th:action="@{'/companies/'+${companyId}+'/employee/post'}" th:object="${employee}"-->
-    <!--                          method="post"-->
-    <!--                          enctype="multipart/form-data">-->
-    <!--                        <fieldset>-->
-    <!--                            <div class="font-weight-normal mb-3">-->
-    <!--                                <span class="text-danger">*</span> Required fields-->
-    <!--                            </div>-->
-    <!--                            <div class="row">-->
-    <!--                                <div class="col-md-6">-->
-    <!--                                    <div class="input-group input-group-static mb-3">-->
-    <!--                                        <div class="form-group">-->
-    <!--                                            <label>Name <span class="text-danger">*</span></label>-->
-    <!--                                            <input type="text" th:field="${employee.name}"-->
-    <!--                                                   class="form-control input-lg"-->
-    <!--                                                   title="Name" required/>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                                <div class="col-md-6">-->
-    <!--                                    <div class="input-group input-group-static mb-3">-->
-    <!--                                        <label>Surname <span class="text-danger">*</span></label>-->
-    <!--                                        <input type="text" th:field="${employee.surname}"-->
-    <!--                                               class="form-control input-lg"-->
-    <!--                                               title="Surname" required/>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                                <div class="row">-->
-    <!--                                    <div class="col-md-12">-->
-    <!--                                        <div class="input-group input-group-static mb-3">-->
-    <!--                                            <label>Email <span class="text-danger">*</span></label>-->
-    <!--                                            <input type="email" th:field="${employee.email}"-->
-    <!--                                                   class="form-control input-lg"-->
-    <!--                                                   title="Email"/>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                                <div class="row">-->
-    <!--                                    <div class="col-md-12">-->
-    <!--                                        <div class="input-group input-group-static mb-3">-->
-    <!--                                            <label>Phone Number <span class="text-danger">*</span></label>-->
-    <!--                                            <input type="text" th:field="${employee.phone_number}"-->
-    <!--                                                   class="form-control input-lg"-->
-    <!--                                                   title="Phone Number"/>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-
-    <!--                                <div class="text-center">-->
-    <!--                                    <button type="submit" class="btn bg-gradient-success w-100 my-4 mb-2">Save-->
-    <!--                                    </button>-->
-    <!--                                    <button type="reset" class="btn bg-gradient-info w-100 my-4 mb-2">Reset</button>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </fieldset>-->
 </form>
 </body>
 </html>

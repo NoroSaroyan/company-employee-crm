@@ -9,6 +9,7 @@ import ru.project.entity.Employee;
 import ru.project.exception.CompanyNotFoundException;
 import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
+import ru.project.utils.PagingUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,11 +33,13 @@ public class SpringController {
                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
         List<Company> companyList = companyService.findAll(page, size);
-//        List<Integer> numberOfPages = PagingUtil.findNumberOfPages(companyService.findAll().size());
 
+        List<Integer> numberOfPages = PagingUtil.findNumberOfPages(companyService.getCount());
 
         model.addAttribute("companies", companyList);
-//        model.addAttribute("numberOfPages", numberOfPages);
+        model.addAttribute("numberOfPages", numberOfPages);
+        model.addAttribute("currentPage", page);
+
         return "companies";
     }
 
@@ -70,7 +73,7 @@ public class SpringController {
         return "edit_company";
     }
 
-    @PostMapping(value = "companies/{companyId}/update")
+    @PostMapping(value = "companies/{companyId}")
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editCompany(@PathVariable Long companyId, @ModelAttribute("company") Company update) {
         update.setId(companyId);
@@ -100,7 +103,12 @@ public class SpringController {
                                @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         List<Employee> employees = employeeService.findAllByCompanyId(companyId, page, size);
+
+        List<Integer> numberOfPages = PagingUtil.findNumberOfPages(companyService.findAll().size());
+
+        model.addAttribute("numberOfPages", numberOfPages);
         model.addAttribute("employees", employees);
+        model.addAttribute("currentPage", page);
         return "employees";
     }
 
