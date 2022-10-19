@@ -1,7 +1,8 @@
 package ru.project.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,8 +11,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "companies")
 @AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@Getter
+@Setter
 public class Company {
 
     @Id
@@ -28,7 +30,6 @@ public class Company {
 
     @Column(name = "email")
     private String email;
-
     public Long getId() {
         return id;
     }
@@ -61,6 +62,10 @@ public class Company {
         this.name = name;
         this.website = website;
         this.email = email;
+    }
+
+    public Company() {
+
     }
 
 }

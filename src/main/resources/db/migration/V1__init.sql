@@ -8,17 +8,17 @@ CREATE TABLE companies
 CREATE TABLE employees
 (
     id           BIGSERIAL NOT NULL PRIMARY KEY,
-    company_id    BIGINT REFERENCES companies(id),
-    name         TEXT   NOT NULL,
-    surname      TEXT   NOT NULL,
-    phone_number TEXT   NOT NULL UNIQUE,
+    company_id   BIGINT REFERENCES companies (id),
+    name         TEXT      NOT NULL,
+    surname      TEXT      NOT NULL,
+    phone_number TEXT      NOT NULL UNIQUE,
     email        TEXT UNIQUE
 );
 create table users
 (
     id       BIGSERIAL NOT NULL PRIMARY KEY,
-    email    TEXT   NOT NULL,
-    password TEXT   NOT NULL
+    email    TEXT      NOT NULL,
+    password TEXT      NOT NULL
 );
 
 CREATE TABLE authorities

@@ -4,27 +4,27 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/cards.css">
-    <link rel="stylesheet" href="/css/pagination.css">
     <title>
-        All Companies
+        All Employees
     </title>
 </head>
 <div th:replace="fragments/header :: header"></div>
 
-<body th:if="${!companies.isEmpty()}">
+<body th:if="${!employees.isEmpty()}">
 <div class="row">
-    <div class="container" th:each="company :${companies}" style="gap: 15px">
+    <div class="container" th:each="employee :${employees}" style="column-gap: normal">
         <div class="column">
             <div class="card">
                 <div class="card__body">
                     <div class="card-text">
                         <h3>
-                            <a class="link" th:href="@{'/companies/'+ ${company.getId()}}"
-                               th:text="${company.getName()}" style="color: black"></a>
+                            <a class="link"
+                               th:href="@{'/companies/'+ ${employee.getCompany().getId()}+'/employees/'+${employee.getId()}}"
+                               th:text="${employee.getName()}+' '+${employee.getSurname()}" style="color: black"></a>
                         </h3>
                     </div>
-                    <p class="card-text" th:text="${'Email: '+company.getEmail()}"></p>
-                    <p class="card-text" th:text="${'Website: '+company.getWebsite()}"></p>
+                    <p class="card-text" th:text="${'Email: '+employee.getEmail()}"></p>
+                    <p class="card-text" th:text="${'Contact: '+employee.getPhone_number()}"></p>
                 </div>
             </div>
         </div>

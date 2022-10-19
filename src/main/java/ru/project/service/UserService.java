@@ -5,13 +5,11 @@ import org.springframework.stereotype.Service;
 import ru.project.entity.User;
 import ru.project.repository.AuthorityRepository;
 import ru.project.repository.UserRepository;
+
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service("userService")
 public class UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserRepository repository;
     private final AuthorityRepository authorityRepository;
 

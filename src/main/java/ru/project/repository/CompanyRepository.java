@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.project.entity.Company;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,4 +30,5 @@ public interface CompanyRepository extends PagingAndSortingRepository<Company, L
     void update(@Param("companyId") Long id, @Param("name") String name, @Param("website") String website, @Param("email") String email);
 
 
+    List<Company> findAll();
 }

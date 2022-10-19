@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 public class Employee {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -86,7 +87,17 @@ public class Employee {
         this.surname = surname;
         this.email = email;
         this.phone_number = phone_number;
-
     }
 
+    public Employee(String name, String surname, String phone_number, String email, Company company) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.company = company;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
