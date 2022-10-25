@@ -3,7 +3,8 @@ CREATE TABLE companies
     id      BIGSERIAL NOT NULL PRIMARY KEY,
     name    TEXT   NOT NULL UNIQUE,
     email   TEXT   UNIQUE ,
-    website TEXT
+    website TEXT,
+    path TEXT
 );
 CREATE TABLE employees
 (

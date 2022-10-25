@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.File;
 
 @Entity
 @Table(name = "companies")
@@ -30,6 +31,13 @@ public class Company {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "path")
+    private String path;
+
+    @Transient
+    private File logo;
+
     public Long getId() {
         return id;
     }
@@ -63,6 +71,14 @@ public class Company {
         this.website = website;
         this.email = email;
     }
+
+    public Company(String name, String website, String email, String path) {
+        this.name = name;
+        this.website = website;
+        this.email = email;
+        this.path = path;
+    }
+
 
     public Company() {
 

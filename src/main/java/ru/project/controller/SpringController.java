@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.project.entity.Company;
 import ru.project.entity.Employee;
 import ru.project.exception.CompanyNotFoundException;
@@ -12,12 +13,18 @@ import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 import ru.project.utils.PagingUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
 public class SpringController {
+
+    private final String DIRECTORY = Paths.get(System.getProperty("user.home"), "Downloads") + "/logos/";
     private final CompanyService companyService;
 
     private final EmployeeService employeeService;
@@ -64,7 +71,6 @@ public class SpringController {
         companyService.save(company);
         return "redirect:/companies/" + company.getId().toString();
     }
-
 
 
     @GetMapping("companies/{companyId}/edit")
@@ -169,5 +175,27 @@ public class SpringController {
         } catch (Exception e) {
             return "error/503";
         }
+    }
+
+    @GetMapping(value = "companies/{companyId}/logo")
+    public String get_uploadPage(Model model, @PathVariable Long companyId) {
+        model.addAttribute("companyId", companyId);
+        return "add_photo";
+    }
+
+    @DeleteMapping("companies/{companyId}/logo/delete")
+    public String delete_logo(@PathVariable Long companyId) {
+        return "redirect:/companies/" + companyId;
+    }
+
+    @PostMapping(value = "companies/{companyId}/logo/upload")
+    public String upload_logo(@PathVariable Long companyId, Model model, @RequestParam("image") MultipartFile file) throws IOException {
+
+
+        String path = DIRECTORY + "logo_" + companyId.toString();
+        File logo = new File(path);
+        Files.write(logo.toPath(), file.getBytes());
+
+        return "redirect:/companies/" + companyId;
     }
 }
