@@ -34,7 +34,7 @@ public class User {
     @JoinTable(name = "users_authorities",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    @ToString.Exclude
+
     private List<Authority> authorities;
 
     public User(String email, String password, List<Authority> authorities) {

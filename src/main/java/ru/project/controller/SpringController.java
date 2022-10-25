@@ -1,6 +1,7 @@
 package ru.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,22 +50,25 @@ public class SpringController {
         return "company";
     }
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("company/add")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String addCompany(Model model) {
         Company company = new Company();
         model.addAttribute("company", company);
         return "add_company";
     }
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("company/post")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String addCompany(@ModelAttribute("company") Company company) {
         companyService.save(company);
         return "redirect:/companies/" + company.getId().toString();
     }
 
+
+
     @GetMapping("companies/{companyId}/edit")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editCompany(Model model, @PathVariable Long companyId) {
         Company company = companyService.findById(companyId).orElseThrow(IllegalArgumentException::new);
 
@@ -73,8 +77,8 @@ public class SpringController {
         return "edit_company";
     }
 
-    @PostMapping(value = "companies/{companyId}")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping(value = "companies/{companyId}/update")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editCompany(@PathVariable Long companyId, @ModelAttribute("company") Company update) {
         update.setId(companyId);
         try {
@@ -86,8 +90,9 @@ public class SpringController {
         }
     }
 
+
     @GetMapping("companies/{companyId}/delete")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deleteCompany(@PathVariable Long companyId) {
         Optional<Company> company = companyService.findById(companyId);
         boolean isEmpty = employeeService.findAllByCompanyId(companyId, 0, 1).isEmpty();
@@ -118,14 +123,15 @@ public class SpringController {
         return "employee";
     }
 
-    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("companies/{companyId}/employees/{employeeId}/delete")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deleteEmployee(@PathVariable Long companyId, @PathVariable Long employeeId) {
         employeeService.deleteById(employeeId);
         return "redirect:/companies/{companyId}/employees";
     }
 
     @GetMapping("companies/{companyId}/employee/add")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String addEmployee(Model model, @PathVariable Long companyId) {
         model.addAttribute("employee", new Employee());
         model.addAttribute("companyId", companyId);
@@ -133,7 +139,7 @@ public class SpringController {
     }
 
     @PostMapping("companies/{companyId}/employee/post")
-//  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String addEmployee(@ModelAttribute("employee") Employee employee,
                               @ModelAttribute("company") Company company, @PathVariable Long companyId) throws CompanyNotFoundException {
 
@@ -144,6 +150,7 @@ public class SpringController {
     }
 
     @GetMapping(value = "companies/{companyId}/employees/{employeeId}/edit")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editEmployee(Model model, @PathVariable Long employeeId, @PathVariable String companyId) {
         Employee employee = employeeService.findById(employeeId).orElseThrow(IllegalArgumentException::new);
 
@@ -153,7 +160,7 @@ public class SpringController {
     }
 
     @PostMapping(value = "companies/{companyId}/employees/{employeeId}/update")
-//  @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String editEmployee(@PathVariable Long employeeId, @ModelAttribute Employee update, @PathVariable Long companyId) {
         update.setId(employeeId);
         try {

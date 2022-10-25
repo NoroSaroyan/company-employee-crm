@@ -34,11 +34,11 @@
             </div>
         </div>
         <div class="row">
-            <a class="button-delete"
+            <a class="button-delete" sec:authorize="hasAuthority('ROLE_ADMIN')"
                th:href="@{'/companies/'+${employee.get().getCompany().getId()}+'/employees/'+${employee.get().getId()}+'/delete'}">Delete
             </a>
 
-            <a class="button-edit"
+            <a class="button-edit" sec:authorize="hasAuthority('ROLE_ADMIN')"
                th:href="@{'/companies/'+${employee.get().getCompany().getId()}+'/employees/'+${employee.get().getId()}+'/edit'}">Edit
             </a>
         </div>

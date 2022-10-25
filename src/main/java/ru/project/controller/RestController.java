@@ -50,8 +50,8 @@ public class RestController {
         return ResponseEntity.ok(employees);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/companies/company")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public @ResponseBody ResponseEntity<Company> addCompany(@RequestBody Company company) {
         companyService.save(company);
         return ResponseEntity.ok(company);
@@ -85,9 +85,8 @@ public class RestController {
         return ResponseEntity.of(employee);
     }
 
-    ///companies/{companyId}
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("companies/{companyId}/employees/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public @ResponseBody ResponseEntity<Long> deleteEmployee(@PathVariable Long employeeId, @PathVariable Long companyId) {
         try {
             employeeService.deleteById(employeeId);

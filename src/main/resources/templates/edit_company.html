@@ -12,35 +12,44 @@
     <link href="/css/forms.css" rel="stylesheet">
     <link href="/css/button.css" rel="stylesheet">
     <title>
-        Edit Company
+        Edit Employee
     </title>
 </head>
-<body>
+<body style="background-color: white">
 <div th:replace="fragments/header :: header"></div>
 <form style="position: relative; left: 35%; top: 25%" th:object="${company}"
-      th:action="@{'/companies/'+${companyId}+'/update'}" method="POST" class="text-start"
+      th:action="@{'/companies/'+${company.getId()}+'/update'}"
+      method="POST" class="text-start"
       enctype="multipart/form-data" role="form">
+
     <div class="row">
-        <div class="my_container">
+        <div class="my_container" style="height: 600px">
+
             <div class="title">Edit Company</div>
+
             <div class="input-container ic1">
                 <input id="name" th:value="${company.getName()}" th:field="${company.name}" class="input" type="text"
                        placeholder=" "/>
                 <div class="cut"></div>
                 <label for="name" class="placeholder">Name</label>
             </div>
-            <div class="input-container ic2">
-                <input id="email" th:value="${company.getEmail()}" th:field="${company.email}" class="input" type="text"
+
+            <div class="input-container ic1">
+                <input id="surname" th:value="${company.getEmail()}" th:field="${company.email}" class="input"
+                       type="text"
                        placeholder=" "/>
                 <div class="cut"></div>
-                <label for="email" class="placeholder">Email</label>
+                <label for="surname" class="placeholder">Email</label>
             </div>
+
             <div class="input-container ic2">
-                <input id="website" th:value="${company.getWebsite()}" th:field="${company.website}" class="input"
-                       type="text" placeholder=" "/>
+                <input id="email" th:value="${company.getWebsite()}" th:field="${company.website}" class="input"
+                       type="text"
+                       placeholder=" "/>
                 <div class="cut"></div>
-                <label for="website" class="placeholder">Website</label>
+                <label for="email" class="placeholder">Website</label>
             </div>
+
             <div class="text-center" style="position: relative; bottom: -3%">
                 <button type="submit" class="button-success">Edit</button>
                 <button type="reset" class="button-delete">Reset</button>
@@ -50,5 +59,3 @@
 </form>
 </body>
 </html>
-
-

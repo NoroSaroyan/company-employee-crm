@@ -10,19 +10,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
-    public void configure(WebSecurity web){
-        web.ignoring().antMatchers( "/js/**","/css/**","/webjars/**");
-
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/js/**", "/css/**", "/webjars/**");
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/", "/home", "/index").permitAll()
-                .antMatchers( "/js/**","/css/**","/webjars/**").permitAll()
+                .antMatchers("/js/**", "/css/**", "/webjars/**").permitAll()
                 .antMatchers("/admin").authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login.html").loginProcessingUrl("/login")
+                .loginPage("/login").loginProcessingUrl("/login")
                 .defaultSuccessUrl("/home", true)
                 .failureUrl("/login")
                 .usernameParameter("login").passwordParameter("entry")
