@@ -42,10 +42,16 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public long getCount(){
+    public long getCount() {
         return companyRepository.count();
     }
+
     public Optional<Company> findById(Long id) {
+        //        if (company.isPresent()) {
+//            if (!company.get().getPath().isEmpty() || company.get().getPath() == null) {
+//                company.get().setLogo(new File(company.get().getPath()));
+//            }
+//        }
         return companyRepository.findById(id);
     }
 
@@ -61,4 +67,11 @@ public class CompanyService {
         return companyRepository.existsById(id);
     }
 
+    public void setPath(Long id, String path) {
+        companyRepository.setPath(id, path);
+    }
+
+    public void deletePath(Long companyId) {
+        companyRepository.deletePath(companyId, null);
+    }
 }

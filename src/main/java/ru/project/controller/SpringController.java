@@ -1,5 +1,7 @@
 package ru.project.controller;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,10 +15,12 @@ import ru.project.service.CompanyService;
 import ru.project.service.EmployeeService;
 import ru.project.utils.PagingUtil;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +28,8 @@ import java.util.Optional;
 @RequestMapping("/")
 public class SpringController {
 
-    private final String DIRECTORY = Paths.get(System.getProperty("user.home"), "Downloads") + "/logos/";
+    //    private final String DIRECTORY = Paths.get(System.getProperty("user.dir"), "Downloads") + "/logos/";
+    private final String DIR = System.getProperty("user.dir") + "/src/main/resources/static/images/logos/";
     private final CompanyService companyService;
 
     private final EmployeeService employeeService;
@@ -53,7 +58,15 @@ public class SpringController {
 
     @GetMapping("companies/{companyId}")
     public String getCompany(Model model, @PathVariable Long companyId) {
-        model.addAttribute("company", companyService.findById(companyId));
+        Optional<Company> company = companyService.findById(companyId);
+        if (company.isPresent()) {
+            if (company.get().getPath() != null) {
+                System.out.println(company.get().getPath());
+                String path = company.get().getPath().split("/static")[1];
+                model.addAttribute("path", path);
+            }
+        }
+        model.addAttribute("company", company);
         return "company";
     }
 
@@ -177,25 +190,46 @@ public class SpringController {
         }
     }
 
-    @GetMapping(value = "companies/{companyId}/logo")
-    public String get_uploadPage(Model model, @PathVariable Long companyId) {
-        model.addAttribute("companyId", companyId);
-        return "add_photo";
-    }
-
-    @DeleteMapping("companies/{companyId}/logo/delete")
-    public String delete_logo(@PathVariable Long companyId) {
-        return "redirect:/companies/" + companyId;
-    }
-
     @PostMapping(value = "companies/{companyId}/logo/upload")
     public String upload_logo(@PathVariable Long companyId, Model model, @RequestParam("image") MultipartFile file) throws IOException {
+        try {
+            Optional<Company> company = companyService.findById(companyId);
+            if (company.isPresent()) {
+                if (company.get().getPath() != null) {
+                    Files.deleteIfExists(Path.of(company.get().getPath()));
+                }
+            }
+            String path = DIR + "logo_" + companyId.toString() + "_" + file.getOriginalFilename();
 
-
-        String path = DIRECTORY + "logo_" + companyId.toString();
-        File logo = new File(path);
-        Files.write(logo.toPath(), file.getBytes());
-
+            File logo = new File(path);
+            Files.write(logo.toPath(), file.getBytes());
+            companyService.setPath(companyId, logo.getPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:/companies/" + companyId;
     }
+
+    @GetMapping("companies/{companyId}/logo/delete")
+    public String deleteLogo(@PathVariable Long companyId) throws IOException {
+        Optional<Company> opt = companyService.findById(companyId);
+        if (opt.isPresent()) {
+            Files.deleteIfExists(Path.of(opt.get().getPath()));
+            companyService.deletePath(companyId);
+        }
+        return "redirect:/companies/" + companyId;
+    }
+
+    @GetMapping("companies/{companyId}/logo")
+    public void getLogo(@PathVariable Long companyId, HttpServletResponse response) throws IOException {
+        response.setContentType("image/jpeg");
+        Optional<Company> opt = companyService.findById(companyId);
+        if (opt.isPresent()) {
+            String path = opt.get().getPath();
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(FileUtil.readAsByteArray(new File(path)));
+            IOUtils.copy(byteArrayInputStream, response.getOutputStream());
+        }
+    }
+
 }
+

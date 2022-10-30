@@ -17,9 +17,9 @@
 <body style="width: 400px">
 <div th:replace="fragments/header :: header"></div>
 <div class="container" th:if="${!company.isEmpty()}" style="position:relative; top: 0; width: 400px">
+
     <div class="card" style="width: 600px; height: 800px">
-        <img src="/images/logo1_google.jpg" alt="image"
-             style="width: 200px; height: 200px">
+        <img  th:src="@{'/companies/'+${company.get().getId()}+'/logo'}" alt="image" style="width: 200px; height: 200px">
 
         <div class="card__body">
             <div class="row">
@@ -45,6 +45,21 @@
             <a class="button-edit" sec:authorize="hasRole('ROLE_ADMIN')"
                th:href="@{'/companies/'+${company.get().getId()}+'/edit'}">Edit
             </a>
+
+            <a class="button-delete" style="height:30px" sec:authorize="hasRole('ROLE_ADMIN')"
+               th:href="@{'/companies/'+${companyId}+'/logo/delete'}">Delete Photo
+            </a>
+
+            <form sec:authorize="hasRole('ROLE_ADMIN')" style="position: relative; left: -28%; bottom: 215%"
+                  method="post"
+                  th:action="@{'/companies/'+${companyId}+'/logo/upload'}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" name="image" class="form-control-file">
+                </div>
+                <button sec:authorize="hasRole('ROLE_ADMIN')" style="height:20px; position: relative; left: -14%; top: 20%"
+                        type="submit" class="button-edit">Upload
+                </button>
+            </form>
         </div>
     </div>
 </div>

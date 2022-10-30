@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import ru.project.entity.Company;
 
@@ -29,6 +30,14 @@ public interface CompanyRepository extends PagingAndSortingRepository<Company, L
     @Query("UPDATE Company c set c.name=:name, c.website=:website, c.email=:email where c.id =:companyId")
     void update(@Param("companyId") Long id, @Param("name") String name, @Param("website") String website, @Param("email") String email);
 
-
     List<Company> findAll();
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("UPDATE Company c set c.path=:path where c.id =:companyId")
+    void setPath(@Param("companyId") Long id, @Param("path") String path);
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Nullable
+    @Query("update Company c set c.path=:empty where c.id =:companyId")
+    void deletePath(@Param("companyId") Long id, String empty);
 }
